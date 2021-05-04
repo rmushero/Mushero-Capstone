@@ -94,7 +94,7 @@ namespace Consultant_Scheduling_Mushero
             }
             return exists;
         }
-        public int InsertCity( string lastUpdateBy)
+        public int insertCity( string lastUpdateBy)
         {
 
             
@@ -135,8 +135,8 @@ namespace Consultant_Scheduling_Mushero
         {
 
             string command = $"UPDATE city set city = '{CityName}', lastUpdateBy = '{username}' where cityId = {CityId} ";
-            try
-            {
+            
+           
                 using (MySqlConnection cnn = new MySqlConnection(connectionString))
                 {
                     using (MySqlCommand cmd = new MySqlCommand(command, cnn))
@@ -145,13 +145,12 @@ namespace Consultant_Scheduling_Mushero
                         
                         try
                         {
-                            cmd.ExecuteNonQuery();
-                            
 
+                        cmd.ExecuteNonQuery();
                         }
                         catch (MySql.Data.MySqlClient.MySqlException ex)
                         {
-                            Console.WriteLine("Error " + ex.Number + " \nMessage: " + ex.Message);
+                            Console.WriteLine("Update City: Error " + ex.Number + " \nMessage: " + ex.Message);
                         }
                         finally
                         {
@@ -160,21 +159,16 @@ namespace Consultant_Scheduling_Mushero
                         }
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
         }
 
 
-        public void getCityData(int cityId)
+        public int getCityData(int cityId)
         {
-           
 
+            CityId = cityId;
             string command = $"SELECT city, countryId FROM city where cityId = {cityId};";
 
-            DataTable dataTable = new DataTable();
+         
             using (MySqlConnection cnn = new MySqlConnection(connectionString))
             {
                 using (MySqlCommand cmd = new MySqlCommand(command, cnn))
@@ -191,13 +185,12 @@ namespace Consultant_Scheduling_Mushero
                             {
                                 while (dr.Read())
                                 {
-                                    City city = new City();
-                                    city.CityId = cityId;
-                                    city.CityName = dr["city"].ToString();
-                                    city.CountryId = Convert.ToInt32(dr["countryId"]);
-                                    cities.Add(city);
-                                    Country country = new Country();
-                                    country.getCountryData(CountryId);
+                                    
+                                   
+                                    CityName = dr["city"].ToString();
+                                    CountryId = Convert.ToInt32(dr["countryId"]);
+                                    
+                                    
 
 
                                 }
@@ -212,7 +205,9 @@ namespace Consultant_Scheduling_Mushero
                     
                 }
             }
+            return CountryId;
         }
+        
 
 
 

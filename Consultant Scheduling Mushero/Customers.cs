@@ -14,17 +14,18 @@ namespace Consultant_Scheduling_Mushero
     {
 
         string currentUser;
-        bool flag = false;
-        string Username;
-        int CustomerId;
-        Customer updateCandidate = new Customer();
-        Address updateAddress = new Address();
-        City updateCity = new City();
-        Country updateCountry = new Country();
+        bool modification = false;
+               
+
+        Customer customer = new Customer();
+        Address address = new Address();
+        City city = new City();
+        Country country = new Country();
 
         public Customers(string username)
         {
             InitializeComponent();
+            this.Text = "Add Customer";
             currentUser = username;
         }
 
@@ -39,30 +40,45 @@ namespace Consultant_Scheduling_Mushero
         public Customers(string username, int id)
         {
             InitializeComponent();
-            flag = true;
+            this.Text = "Modify Customer";
+            modification = true;
             currentUser = username;
             populateForm(id);
         }
         private void saveBtn_Click(object sender, EventArgs e)
         {
-            if (flag = true)
+            if (modification == true)
             {
-                if (validateFormData() == true)
-                {
-                    updateCandidate.UpdateCustomer(currentUser);
-                    this.Close();
-                }
+                updateExistingCustomer();
             }
             else
             {
-                if (validateFormData() == true)
-                {
-                    createObject();
-                    this.Close();
-                }
+                
+                createNewCustomer();
             }
 
 
+        }
+
+        private void createNewCustomer()
+        {
+            if (validateFormData() == true)
+            {
+
+                createObject();
+                MessageBox.Show("Customer Created Successfully");
+                this.Close();
+            }
+        }
+
+        private void updateExistingCustomer()
+        {
+            if (validateFormData() == true)
+            {
+                updateCustomerInfo();
+                MessageBox.Show("Customer Updated Successfully");
+                this.Close();
+            }
         }
 
         private void cancelBtn_Click(object sender, EventArgs e)
@@ -78,6 +94,11 @@ namespace Consultant_Scheduling_Mushero
             }
         }
 
+
+        /// <summary>
+        /// Iterates over all the controls to ensure they are being used
+        /// </summary>
+        /// <returns></returns>
         private bool validateFormData()
         {
             bool validated = false;
@@ -103,26 +124,19 @@ namespace Consultant_Scheduling_Mushero
             return validated;
         }
 
+
+        /// <summary>
+        /// creates a dummy customer for method testing
+        /// </summary>
         private void createGenericObj()
         {
-
-            Country country = new Country();
-            City city = new City();
-            Address address = new Address();
-            Customer newCustomer = new Customer();
-
-           
-            
-            
-            
-
             string _country = "USA";
             country.Country_name = _country;
             city.CountryId = country.InsertCountry(currentUser);
            
             string _city = "Hermansville";
             city.CityName = _city;
-            address.CityId = city.InsertCity( currentUser);
+            address.CityId = city.insertCity( currentUser);
             string _addr1 = "W4988 US Highway 2";
             string _addr2 = "null";
             string _postal = "49847";
@@ -131,162 +145,155 @@ namespace Consultant_Scheduling_Mushero
             address.Address2 = _addr2;
             address.PostalCode = _postal;
             address.Phone = _phone;
+            customer.AddressId = address.insertAddress(currentUser);
 
-            newCustomer.AddressId = address.insertAddress(currentUser);
             string _name = "Rodney Mushero";
             sbyte _active = 1;
-            newCustomer.CustomerName = _name;
-            newCustomer.Active = _active;
+            customer.CustomerName = _name;
+            customer.Active = _active;
 
-            int customerID = newCustomer.InsertCustomer(currentUser);
-            newCustomer.CustomerId = customerID;
+            int customerID = customer.insertCustomer(currentUser);
+            customer.CustomerId = customerID;
         }
-        private void createObject()
-        {
-            Country country = new Country();
-            City city = new City();
-            Address address = new Address();
-            Customer newCustomer = new Customer();
 
-            
-            string _name = nameTxtBox.Text.ToString();
-            string _phone = phoneTextBox.Text.ToString();
-            byte _active = 1; //Not of correct Type
+
+        /// <summary>
+        /// Gets data on the form and creates an object 
+        /// </summary>
+        private void createObject()
+        {    
+
+            string _country = countryTxtBox.Text.ToString();
+            country.Country_name = _country;
+            city.CountryId = country.InsertCountry(currentUser);
+
+
+            string _city = cityTxtBox.Text.ToString();
+            city.CityName = _city;
+            address.CityId = city.insertCity(currentUser);
+
             string _addr1 = addr1TxtBox.Text.ToString();
             string _addr2 = addr2TxtBox.Text.ToString();
             string _postal = postalTxtBox.Text.ToString();
-            string _city = cityTxtBox.Text.ToString();
-            string _country = countryTxtBox.Text.ToString();
-            country.Country_name = _country;
-            int countryID = country.InsertCountry(currentUser);
-            city.CountryId = country.CountryId;
-            city.CityName = _city;
-            int cityID = city.InsertCity(currentUser);
-            address.CityId = cityID;
+            string _phone = phoneTextBox.Text.ToString();
+           
             address.Address1 = _addr1;
             address.Address2 = _addr2;
             address.PostalCode = _postal;
             address.Phone = _phone;
-            int addressID = address.insertAddress(currentUser);
-            newCustomer.CustomerName = _name;
-            newCustomer.AddressId = addressID;
-            int customerID = newCustomer.InsertCustomer(currentUser);
-            newCustomer.CustomerId = customerID;
+            customer.AddressId = address.insertAddress(currentUser);
+
+
+            string _name = nameTxtBox.Text.ToString();
+            customer.CustomerName = _name;
+            sbyte _active = 1; //Not of correct Type
+            customer.Active = _active;
+
+            int customerID = customer.insertCustomer(currentUser);
+            customer.CustomerId = customerID;
 
 
 
 
         }
+
+        /// <summary>
+        /// Populates the form with the selected customer data
+        /// </summary>
+        /// <param name="customerID"></param>
         public void populateForm(int customerID)
         {
-
             
 
+            customer.AddressId = customer.getCustomerData(customerID);
+
+            Console.WriteLine($"Address ID:{customer.AddressId}");
 
 
-        }
+           address.CityId = address.getAddressData(customer.AddressId);
+
+            city.CountryId = city.getCityData(address.CityId);
+            country.getCountryData(city.CountryId);
+            country.CountryId = city.CountryId;
 
 
-        private void saveBtn_Click2(object sender, EventArgs e)
-        {
-            try
+            nameTxtBox.Text = customer.CustomerName;
+            if (customer.Active < 1)
             {
-                if (validateFormData() == true)
-                {
-
-                    sbyte _active;
-                    string _name = nameTxtBox.Text.ToString();
-                    string _phone = phoneTextBox.Text.ToString();
-                    if (activeCkBx.Checked == true)
-                    {
-                        _active = 1; //Not of correct Type
-                    }
-                    else
-                    {
-                        _active = 0;
-                    }
-                    string _addr1 = addr1TxtBox.Text.ToString();
-                    string _addr2 = addr2TxtBox.Text.ToString();
-                    string _postal = postalTxtBox.Text.ToString();
-                    string _city = cityTxtBox.Text.ToString();
-                    string _country = countryTxtBox.Text.ToString();
-
-                    if (_name != updateCandidate.CustomerName)
-                    {
-                        updateCandidate.CustomerName = _name;
-                    }
-                    if (_active != updateCandidate.Active)
-                    {
-                        updateCandidate.Active = _active;
-                    }
-                    if (_addr1 != updateAddress.Address1)
-                    {
-                        updateAddress.Address1 = _addr1;
-                    }
-                    if (_addr2 != updateAddress.Address2)
-                    {
-                        updateAddress.Address2 = _addr2;
-                    }
-                    if (_postal != updateAddress.PostalCode)
-                    {
-                        updateAddress.PostalCode = _postal;
-                    }
-                    if (_phone != updateAddress.Phone)
-                    {
-                        updateAddress.Phone = _phone;
-                    }
-                    if (_city != updateCity.CityName)
-                    {
-                        updateCity.CityName = _city;
-                    }
-                    if (_country != updateCountry.Country_name)
-                    {
-                        updateCountry.Country_name = _country;
-                    }
-
-                    updateCountry.updateCountry(Username);
-                    updateCity.updateCity(Username);
-                    updateAddress.updateAddress(Username);
-                    updateCandidate.UpdateCustomer(Username);
-                }
-                MessageBox.Show("Customer Updated");
-                this.Close();
-
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.Message.ToString());
-            }
-
-        }
-
-        private void delBtn_Click(object sender, EventArgs e)
-        {
-            const string en_message = "Are you sure you want to Delete this customer? This action cannot be undone";
-            const string caption = "Delete Customer";
-            var result = MessageBox.Show(en_message, caption, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
-            if (result == DialogResult.No)
-            {
-
-
+                activeCkBx.Checked = false;
             }
             else
             {
-                try
-                {
-                    //todo make this a boolean 
-                    // if boolean > 0 then confirm deletion
-                    updateCandidate.deleteCustomerData(CustomerId);
-                    this.Close();
-                }
-                catch (Exception ex)
-                {
-                    Console.WriteLine(ex.Message);
-                }
-
+                activeCkBx.Checked = true;
             }
+
+            phoneTextBox.Text = address.Phone;
+            addr1TxtBox.Text = address.Address1;
+            addr2TxtBox.Text = address.Address2;
+            postalTxtBox.Text = address.PostalCode;
+            cityTxtBox.Text = city.CityName;
+            countryTxtBox.Text = country.Country_name;
+
+
+
+
+
         }
 
+
+
+        /// <summary>
+        /// Gets the updated customer information and updates tables accordingly
+        /// </summary>
+        public void updateCustomerInfo()
+        {
+            
+
+                sbyte _active;
+                string _name = nameTxtBox.Text.ToString();
+            Console.WriteLine(_name);
+                string _phone = phoneTextBox.Text.ToString();
+            Console.WriteLine(_phone);
+            if (activeCkBx.Checked == true)
+                {
+                    _active = 1; //Not of correct Type
+                }
+                else
+                {
+                    _active = 0;
+                }
+                string _addr1 = addr1TxtBox.Text.ToString();
+            Console.WriteLine(_addr1);
+            string _addr2 = addr2TxtBox.Text.ToString();
+            Console.WriteLine(_addr2);
+            string _postal = postalTxtBox.Text.ToString();
+            Console.WriteLine(_postal);
+            string _city = cityTxtBox.Text.ToString();
+            Console.WriteLine(_city);
+            string _country = countryTxtBox.Text.ToString();
+            Console.WriteLine(_country);
+
+
+                 customer.CustomerName = _name;
+                 customer.Active = _active;                
+                 address.Address1 = _addr1;               
+                 address.Address2 = _addr2;               
+                 address.PostalCode = _postal;               
+                 address.Phone = _phone;               
+                 city.CityName = _city;
+                 country.Country_name = _country;
+
+
+            country.updateCountry(currentUser);
+            city.updateCity(currentUser);
+        
+            address.updateAddress(currentUser);
+            customer.updateCustomer(currentUser);
+
+        }
+                      
+
+    
 
 
     }

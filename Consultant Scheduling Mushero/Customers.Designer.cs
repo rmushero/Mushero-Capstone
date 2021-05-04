@@ -131,7 +131,6 @@ namespace Consultant_Scheduling_Mushero
             this.activeCkBx.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.activeCkBx.Checked = true;
             this.activeCkBx.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.activeCkBx.Enabled = false;
             this.activeCkBx.Location = new System.Drawing.Point(33, 106);
             this.activeCkBx.Name = "activeCkBx";
             this.activeCkBx.Size = new System.Drawing.Size(62, 17);
@@ -215,7 +214,7 @@ namespace Consultant_Scheduling_Mushero
             this.label1.TabIndex = 16;
             this.label1.Text = "Name";
             // 
-            // AddCustomer
+            // Customers
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -228,7 +227,7 @@ namespace Consultant_Scheduling_Mushero
             this.Controls.Add(this.phoneTextBox);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label1);
-            this.Name = "AddCustomer";
+            this.Name = "Customers";
             this.Text = "addCustomer";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();

@@ -19,7 +19,8 @@ namespace Consultant_Scheduling_Mushero
         private int addressId;
         private sbyte active;
 
-       // public List<Customer> customers = new List<Customer>();
+        
+        
 
 
         public int CustomerId
@@ -110,11 +111,11 @@ namespace Consultant_Scheduling_Mushero
         }
 
         // CREATE 
-        public int InsertCustomer(string username)
+        public int insertCustomer(string username)
         {
             string command = $"INSERT INTO customer (customerName, addressId, " +
                 $"active, createDate, createdBy, lastUpdateBy) " +
-                $"Values('{customerName}', {AddressId}, {active}, " +
+                $"Values('{customerName}', {AddressId}, {Active}, " +
                 $"'{DateTime.Now.ToString("yyyy-MM-dd H:mm:ss")}', '{username}', '{username}')";
             try
             {
@@ -122,7 +123,7 @@ namespace Consultant_Scheduling_Mushero
                 {
                     using (MySqlCommand cmd = new MySqlCommand(command, cnn))
                     {
-                       
+
 
                         try
                         {
@@ -149,39 +150,48 @@ namespace Consultant_Scheduling_Mushero
             return CustomerId;
         }
 
-        public int getLastId()
+
+        public int getCustomerData(int customerId)
         {
-            string command = "SELECT last_insert_id()";
-            int id = 0;
+            CustomerId = customerId;
+            string command = $"SELECT customerName, addressID, active FROM customer where customerId = {customerId}";
 
-            try
+            using (MySqlConnection cnn = new MySqlConnection(connectionString))
             {
-                using (MySqlConnection cnn = new MySqlConnection(connectionString))
+                using (MySqlCommand cmd = new MySqlCommand(command, cnn))
                 {
-                    using (MySqlCommand cmd = new MySqlCommand(command, cnn))
+                    cnn.Open();
+
+                    try
                     {
-                        try
+                        using (MySqlDataReader dr = cmd.ExecuteReader(CommandBehavior.CloseConnection))
                         {
-                            cnn.Open();
+                            if (dr.HasRows)
+                            {
+                                while (dr.Read())
+                                {
 
-                            id = Convert.ToInt32(cmd.ExecuteScalar());
+                                    CustomerName = dr["customerName"].ToString();
+                                    AddressId = Convert.ToInt32(dr["addressId"]);
+                                    Active = Convert.ToSByte(dr["active"]);
+                                    
+                                }
 
+                            }
                         }
-                        catch (MySql.Data.MySqlClient.MySqlException ex)
-                        {
-                            Console.WriteLine("Error " + ex.Number + " \nMessage: " + ex.Message);
-                        }
-                        cnn.Close();
-                        cnn.Dispose();
+
+
+
                     }
+                    catch (MySql.Data.MySqlClient.MySqlException ex)
+                    {
+                        Console.WriteLine("Get Customer Data: Error " + ex.Number + " \nMessage: " + ex.Message);
+                    }
+
                 }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
-            return id;
 
+            return AddressId;
         }
 
         public DataTable getCustomersforTable(string username)
@@ -190,15 +200,15 @@ namespace Consultant_Scheduling_Mushero
 
 
             DataTable customers = new DataTable();
-            
-             
-             string command = $"SELECT c.customerID as ID, c.customerName as Name , c.active as 'Active', a.address as 'Address'," +
-                $" a.address2 as 'Address 2', a.postalCode as 'Postal Code', a.phone as 'Phone', ci.city as 'City', co.country as 'Country'" +
-                $"FROM customer c right join address a on c.addressId = a.addressId " +
-                $"right join city ci on a.cityId = ci.cityId " +
-                $"right join country co on co.countryId = ci.countryId " +
-                $"where c.createdBy = '{username}'";
-            
+
+
+            string command = $"SELECT c.customerID as ID, c.customerName as Name , c.active as 'Active', a.address as 'Address'," +
+               $" a.address2 as 'Address 2', a.postalCode as 'Postal Code', a.phone as 'Phone', ci.city as 'City', co.country as 'Country'" +
+               $"FROM customer c right join address a on c.addressId = a.addressId " +
+               $"right join city ci on a.cityId = ci.cityId " +
+               $"right join country co on co.countryId = ci.countryId " +
+               $"where c.createdBy = '{username}'";
+
 
 
             using (MySqlConnection cnn = new MySqlConnection(connectionString))
@@ -212,18 +222,23 @@ namespace Consultant_Scheduling_Mushero
                         cnn.Open();
 
                         customers.Load(cmd.ExecuteReader());
-                        cnn.Close();
-                        cnn.Dispose();
+
                     }
                     catch (MySql.Data.MySqlClient.MySqlException ex)
                     {
                         Console.WriteLine(ex.Message.ToString());
                     }
+                    finally
+                    {
+                        cnn.Close();
+                        cnn.Dispose();
+
+
+                    }
+
+
 
                 }
-
-
-
             }
             return customers;
         }
@@ -233,9 +248,10 @@ namespace Consultant_Scheduling_Mushero
 
 
         // UPDATE 
-        public void UpdateCustomer(string Username)
+        public void updateCustomer(string Username)
         {
-            string command = "UPDATE customer SET customerName = " + CustomerName + "\', active =" + active + ", lastUpdateBy = '" + Username + " \' WHERE customerId = " + CustomerId + "";
+            string command = $"UPDATE customer SET customerName = '{CustomerName}', active ={Active}," +
+                $" lastUpdateBy = '{Username}' WHERE customerId = {CustomerId }";
 
             try
             {
@@ -249,10 +265,12 @@ namespace Consultant_Scheduling_Mushero
                         {
                             cmd.ExecuteNonQuery();
 
+
+
                         }
                         catch (MySql.Data.MySqlClient.MySqlException ex)
                         {
-                            Console.WriteLine("Error " + ex.Number + " \nMessage: " + ex.Message);
+                            Console.WriteLine("Update Customer: Error " + ex.Number + " \nMessage: " + ex.Message);
                         }
                         finally
                         {
@@ -268,88 +286,82 @@ namespace Consultant_Scheduling_Mushero
             }
         }
 
-        public int deleteCustomer(int CustomerID)
+        public bool deleteCustomer(int CustomerID)
         {
-            int deleted = 0;
-            string command = "DELETE from appointment where customerId =" + CustomerID + "";
-
-            string command2 = "DELETE c, ad, ct, ctry " +
-                "from customer c " +
-                "inner join address ad on c.addressId = ad.addressID " +
-                "inner join city ct on ad.cityId = ct.cityId " +
-                "inner join country ctry on ct.countryId = ctry.countryId " +
-                "where c.customerId = " + CustomerID + "";
-
-
-            return deleted;
-
-        }
-        // DELETE
-        public void deleteCustomerData(int CustomerID)
-        {
+            bool deleted = false;
+            string command2 = "DELETE from appointment where customerId =" + CustomerID + "";
 
             using (MySqlConnection cnn = new MySqlConnection(connectionString))
             {
-                using (MySqlCommand cmd = new MySqlCommand("deleteCustomer", cnn))
+                using (MySqlCommand cmd = new MySqlCommand(command2, cnn))
                 {
                     cnn.Open();
 
-
                     try
                     {
-                        cmd.ExecuteNonQuery();
+                        if (cmd.ExecuteNonQuery() > 0)
+                        {
+                            deleted = true;
+                        }
+                        else
+                        {
+                            Console.WriteLine("Delete customer failed");
+                        }
 
                     }
                     catch (MySql.Data.MySqlClient.MySqlException ex)
                     {
-                        Console.WriteLine("Error " + ex.Number + " \nMessage: " + ex.Message);
+                        Console.WriteLine("Update Customer: Error " + ex.Number + " \nMessage: " + ex.Message);
                     }
                     finally
                     {
                         cnn.Close();
                         cnn.Dispose();
                     }
-
-
                 }
             }
 
-        }
+            string command = "DELETE c, ad, ct, ctry " +
+            "from customer c " +
+            "inner join address ad on c.addressId = ad.addressID " +
+            "inner join city ct on ad.cityId = ct.cityId " +
+            "inner join country ctry on ct.countryId = ctry.countryId " +
+            "where c.customerId = " + CustomerID + "";
 
-        public DataTable loadCustomerAppointments(int id)
-        {
-
-            DataTable table = new DataTable();
             using (MySqlConnection cnn = new MySqlConnection(connectionString))
             {
-
-                using (MySqlCommand cmd = new MySqlCommand("getCustomerAppointments", cnn))
+                using (MySqlCommand cmd = new MySqlCommand(command, cnn))
                 {
                     cnn.Open();
 
-
                     try
                     {
-
-                        using (MySqlDataReader reader = cmd.ExecuteReader())
-                        {
-                            table.Load(reader);
-                        }
-
-                        cnn.Close();
-                        cnn.Dispose();
+                        cmd.ExecuteNonQuery();
+                       
+                       
                     }
                     catch (MySql.Data.MySqlClient.MySqlException ex)
                     {
-                        Console.WriteLine(ex.Message.ToString());
+                        Console.WriteLine("Delete Customer: Error " + ex.Number + " \nMessage: " + ex.Message);
                     }
-                    return table;
+                    finally
+                    {
+                        cnn.Close();
+                        cnn.Dispose();
+                    }
                 }
             }
 
+
+            return deleted;
+
         }
-
-
-
     }
 }
+       
+
+       
+
+
+
+    

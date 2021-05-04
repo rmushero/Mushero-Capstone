@@ -15,7 +15,7 @@ namespace Consultant_Scheduling_Mushero
         User currentUser = new User();
         Dictionary<string, double> dataSource = new Dictionary<string, double>();
         Appointment newApt = new Appointment();
-        DataTable customers = new DataTable();
+        Dictionary<int, string> customers = new Dictionary<int, string>();
         bool modificationMode = false;
         public string connectionString = ConfigurationManager.ConnectionStrings["SqlConnection"].ConnectionString;
 
@@ -30,10 +30,11 @@ namespace Consultant_Scheduling_Mushero
             currentUser = user;
           
             InitializeComponent();
-            customers = populateCustomer(currentUser.Username);
-            customerSelection.DataSource = customers;
-            customerSelection.DisplayMember = "customerName";
-            customerSelection.ValueMember = "customerId";
+            
+            customerSelection.DisplayMember = "Key";
+            customerSelection.ValueMember = "Key";
+            populateCustomer(currentUser.Username);
+            customerSelection.DataSource = new BindingSource(customers, null);
             endDateTime.Value = startDateTime.Value.AddMinutes(30);
             
 
@@ -59,28 +60,44 @@ namespace Consultant_Scheduling_Mushero
             newApt.AppointmentId = id;
             currentUser = user;
             populateForm(newApt.AppointmentId);
-            customers = populateCustomer(currentUser.Username);
-            customerSelection.DataSource = customers;
-            customerSelection.DisplayMember = "customerName";
-            customerSelection.ValueMember = "customerId";
+           
+            customerSelection.DisplayMember = "Value";
+            customerSelection.ValueMember = "Key";
+
+            
+
+           
+
+           
+
+           
+           
         }
 
-        public DataTable populateCustomer(string username)
+        public void populateCustomer(string username)
         {
             string command = "Select customerId, customerName from customer where createdBy = '" + username + "\'";
 
-            DataTable returnedResults = null;
+           
 
             using (MySqlConnection cnn = new MySqlConnection(connectionString))
             {
                 using (MySqlCommand cmd = new MySqlCommand(command, cnn))
                 {
-                    using (MySqlDataAdapter da = new MySqlDataAdapter(cmd))
+                    cnn.Open();
+                    using (MySqlDataReader dr = cmd.ExecuteReader())
+                            {
+
+                        
                         try
                         {
-                            returnedResults = new DataTable();
-                            da.Fill(returnedResults);
+                            while (dr.Read())
+                            {
+                                customers.Add(Convert.ToInt32(dr["customerId"]), dr["customerName"].ToString());
+                            }
+
                         }
+
                         catch (MySql.Data.MySqlClient.MySqlException ex)
                         {
                             Console.WriteLine("Error " + ex.Number + " \nMessage: " + ex.Message);
@@ -90,10 +107,12 @@ namespace Consultant_Scheduling_Mushero
                             cnn.Close();
                             cnn.Dispose();
                         }
+                    }
                 }
-            }
 
-            return returnedResults;
+            }
+           
+           
         }
 
       
@@ -113,6 +132,10 @@ namespace Consultant_Scheduling_Mushero
             //Set the Location combo box
             locationComboBx.SelectedItem = newApt.Location.ToString();
 
+           
+
+            
+
             //Set Contact Box
             contactTxtBox.Text = newApt.Contact.ToString();
 
@@ -123,10 +146,10 @@ namespace Consultant_Scheduling_Mushero
             urlTxtBox.Text = newApt.Url.ToString();
 
             //Set Start Time
-         // startDateTime.Value = newApt.Start.ToString();
+          startDateTime.Value = newApt.Start;
 
             //Set End Time
-           // endDateTime.Value = newApt.End=ToString();
+           endDateTime.Value = newApt.End;
         }
 
 
@@ -188,7 +211,7 @@ namespace Consultant_Scheduling_Mushero
 
            
             junkApt.UserID = 1;
-            junkApt.CustomerID = 8;
+            junkApt.CustomerID = 2;
             junkApt.Title = "Automatically Generated Test Appointment";
             junkApt.Description = "Not needed";
             junkApt.Location = "New York, New York";
@@ -294,13 +317,14 @@ namespace Consultant_Scheduling_Mushero
 
         public bool validateFields()
         {
+            int count = 0;
             bool validated = false;
             // Ensure all fields are filled out
             foreach (var control in Controls.Cast<Control>().Where(c => c is TextBox))
             {
                 if (string.IsNullOrEmpty(control.Text.ToString()))
                 {
-                    MessageBox.Show("Please fill out all fields");
+                    count++;
 
                 }
                 else
@@ -308,6 +332,13 @@ namespace Consultant_Scheduling_Mushero
                     validated = true;
                 }
             }
+
+            if(count >0)
+            {
+                MessageBox.Show("Please fill out all fields");
+                validated = false;
+            }
+            
 
 
             return validated;
@@ -393,7 +424,10 @@ namespace Consultant_Scheduling_Mushero
             newApt.Url = urlTxtBox.Text.ToString();
             newApt.Start = startDateTime.Value;
             newApt.End = endDateTime.Value;
-            
+            newApt.CustomerID = Convert.ToInt32(customerSelection.SelectedValue);
+            Console.WriteLine(newApt.CustomerID);
+
+           
 
 
             Console.WriteLine(newApt.Start.ToString());
@@ -429,6 +463,7 @@ namespace Consultant_Scheduling_Mushero
             newApt.Url = urlTxtBox.Text.ToString();
             newApt.Start =startDateTime.Value;
             newApt.End = endDateTime.Value;
+            newApt.CustomerID = Convert.ToInt32(customerSelection.SelectedValue);
 
             try
             {

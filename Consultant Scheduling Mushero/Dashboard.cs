@@ -71,8 +71,10 @@ namespace Consultant_Scheduling_Mushero
         {
             this.Hide();
             Customers launch = new Customers(CurrentUser.Username);
-            launch.ShowDialog();
+            launch.Show();
             this.Show();
+            custTableRefresh();
+            aptTableRefresh();
 
         }
 
@@ -86,6 +88,8 @@ namespace Consultant_Scheduling_Mushero
         {
             Console.WriteLine(CurrentUser.UserID.ToString());
             new Appointments(CurrentUser).Show();
+            custTableRefresh();
+            aptTableRefresh();
 
 
         }
@@ -115,6 +119,8 @@ namespace Consultant_Scheduling_Mushero
 
                         Customers updateCustomer = new Customers(CurrentUser.Username, id);
                         updateCustomer.Show();
+                        custTableRefresh();
+                        aptTableRefresh();
                         this.Show();
 
 
@@ -130,7 +136,7 @@ namespace Consultant_Scheduling_Mushero
             {
                 int selectedrowindex = appointmentTable.SelectedCells[0].RowIndex;
                 DataGridViewRow selectedRow = appointmentTable.Rows[selectedrowindex];
-                int id = Int32.Parse(selectedRow.Cells["ID"].Value.ToString());
+                int id = Int32.Parse(selectedRow.Cells["appointmentId"].Value.ToString());
                 const string message = "Would you like to modify this appointment?";
                 string caption = "Edit appointment? " + id + "";
                 var result = MessageBox.Show(message, caption, MessageBoxButtons.YesNo, MessageBoxIcon.Question);
@@ -147,6 +153,9 @@ namespace Consultant_Scheduling_Mushero
 
                         Appointments modifyAppointment = new Appointments(id, CurrentUser);
                         modifyAppointment.Show();
+                        custTableRefresh();
+                        aptTableRefresh();
+                       
                         this.Show();
 
 
@@ -178,6 +187,7 @@ namespace Consultant_Scheduling_Mushero
            
 
            customerTable.DataSource = temp;
+            
 
            
             customerTable.Update();
@@ -185,11 +195,12 @@ namespace Consultant_Scheduling_Mushero
         }
         public void aptTableRefresh()
         {
+            DataTable temp = new DataTable();
             Appointment appointment = new Appointment();
-            appointment.getAppointments(CurrentUser.UserID); ;
-            appointments = appointment.appointmentsLst;
+            temp = appointment.getAppointments(CurrentUser.UserID); ;
+           
 
-            appointmentTable.DataSource = appointments;
+            appointmentTable.DataSource = temp;
             appointmentTable.Update();
             appointmentTable.Refresh();
         }
@@ -206,23 +217,27 @@ namespace Consultant_Scheduling_Mushero
         private void testCustomerToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Customers testCust = new Customers(CurrentUser.Username, "OK");
-
+            custTableRefresh();
+            aptTableRefresh();
         }
 
         private void reportsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Reports reportWindow = new Reports();
             reportWindow.Show();
+            custTableRefresh();
+            aptTableRefresh();
             this.Show();
         }
 
+        // TODO: Fix Delete Appointments
         private void deleteAppointmentToolStripMenuItem_Click_1(object sender, EventArgs e)
         {
             if (appointmentTable.Rows.Count >= 1)
             {
                 int selectedrowindex = appointmentTable.SelectedCells[0].RowIndex;
                 DataGridViewRow selectedRow = appointmentTable.Rows[selectedrowindex];
-                int id = Int32.Parse(selectedRow.Cells["ID"].Value.ToString());
+                int id = Int32.Parse(selectedRow.Cells["appointmentId"].Value.ToString());
                 const string message = "Would you like to deleted this appointment?";
                 string caption = "Delete Appointment?";
                 var result = MessageBox.Show(message, caption, MessageBoxButtons.YesNo, MessageBoxIcon.Warning);
@@ -241,12 +256,17 @@ namespace Consultant_Scheduling_Mushero
             }
         }
 
+
+        // This works
         private void genericAppointmentToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Appointments testAppointment = new Appointments(CurrentUser.Username, "OK");
+            custTableRefresh();
             aptTableRefresh();
         }
 
+
+        // This works now 
         private void deleteCustomerToolStripMenuItem_Click(object sender, EventArgs e)
         {
             if( customerTable.Rows.Count >= 1)
@@ -271,5 +291,14 @@ namespace Consultant_Scheduling_Mushero
                 }
             }
         }
+
+
+        // This works
+        private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
+        {
+            aptTableRefresh();
+            custTableRefresh();
+        }
+
     }
 }

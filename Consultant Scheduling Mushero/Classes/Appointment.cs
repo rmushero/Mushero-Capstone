@@ -27,7 +27,7 @@ namespace Consultant_Scheduling_Mushero
         private string createdBy;
         private string lastUpdateBy;
 
-        public List<Appointment> appointmentsLst = new List<Appointment>();
+    
 
         public int CustomerID
         {
@@ -98,9 +98,9 @@ namespace Consultant_Scheduling_Mushero
         {
             bool appointmentCreated = false;
             string command = $"INSERT INTO appointment(customerId, userId, title, description, location, contact, type, url, start, end, createDate, createdBy, lastUpdateBy)" +
-                $"VALUES('{CustomerID}', '{UserID}', '{Title}', '{Description}','{Location}','{Contact}', '{Type}', '{Url}', {Start}, {End}, now(),'{username }','{username}')";
+                $"VALUES('{CustomerID}', '{UserID}', '{Title}', '{Description}','{Location}','{Contact}', '{Type}', '{Url}', '{Start.ToString("yyyy-MM-dd H:mm:ss")}', '{End.ToString("yyyy-MM-dd H:mm:ss")}', '{DateTime.Now.ToString("yyyy-MM-dd H:mm:ss")}','{username }','{username}')";
 
-            int rowsAffected;
+            
             try
             {
                 using (MySqlConnection cnn = new MySqlConnection(connectionString))
@@ -111,8 +111,8 @@ namespace Consultant_Scheduling_Mushero
                         try
                         {
                             cnn.Open();
-                            rowsAffected = cmd.ExecuteNonQuery();
-                            if (rowsAffected > 0)
+                            
+                            if (cmd.ExecuteNonQuery() > 0)
                             {
                                 appointmentCreated = true;
 
@@ -122,7 +122,7 @@ namespace Consultant_Scheduling_Mushero
                         }
                         catch (MySql.Data.MySqlClient.MySqlException ex)
                         {
-                            Console.WriteLine("Error " + ex.Number + " \nMessage: " + ex.Message);
+                            Console.WriteLine("Creat Appointment: Error " + ex.Number + " \nMessage: " + ex.Message);
                         }
                         finally
                         {
@@ -145,11 +145,11 @@ namespace Consultant_Scheduling_Mushero
 
         // Get appointments
 
-        public void getAppointments(int userID)
+        public DataTable getAppointments(int userID)
         {
             string command = "SELECT * FROM appointment a WHERE userId = " + userID + " order by start asc";
 
-
+            DataTable appointments = new DataTable();
             using (MySqlConnection cnn = new MySqlConnection(connectionString))
             {
                 using (MySqlCommand cmd = new MySqlCommand(command, cnn))
@@ -159,44 +159,25 @@ namespace Consultant_Scheduling_Mushero
                     {
                         cnn.Open();
 
-                        using (MySqlDataReader reader = cmd.ExecuteReader())
-                        {
-                            if (reader.HasRows)
-                            {
-                                while (reader.Read())
-                                {
-                                    Appointment appointment = new Appointment();
-                                    appointment.AppointmentId = Convert.ToInt32(reader["appointmentId"]);
-                                    appointment.UserID = Convert.ToInt32(reader["userId"]);
-                                    appointment.CustomerID = Convert.ToInt32(reader["customerId"]);
-                                    appointment.Title = reader["title"].ToString();
-                                    appointment.Description = reader["description"].ToString();
-                                    appointment.Location = reader["location"].ToString();
-                                    appointment.Contact = reader["contact"].ToString();
-                                    appointment.Type = reader["type"].ToString();
-                                    appointment.Url = reader["url"].ToString();
-                                    appointment.Start = Convert.ToDateTime(reader["start"]);
-                                    appointment.End = Convert.ToDateTime(reader["end"]);
-                                    appointment.CreatedBy = reader["createdBy"].ToString();
-                                    appointment.LastUpdateBy = reader["lastUpdateBy"].ToString();
-                                    appointmentsLst.Add(appointment);
-                                }
-                            }
-
-                        }
-
-                        cnn.Close();
-                        cnn.Dispose();
+                        appointments.Load(cmd.ExecuteReader());
+                        
                     }
                     catch (MySql.Data.MySqlClient.MySqlException ex)
                     {
-                        Console.WriteLine(ex.Message.ToString());
+                        Console.WriteLine("get_Appointment(): ->Error " + ex.Number + " \nMessage: " + ex.Message); ;
+                    }
+                    finally
+                    {
+                        cnn.Close();
+                        cnn.Dispose();
                     }
 
                 }
 
 
             }
+
+            return appointments;
         }
 
 
@@ -205,16 +186,16 @@ namespace Consultant_Scheduling_Mushero
 
             bool aptUpdated = false;
 
-            string command = $"UPDATE appointment SET appointment.title = {title},  " +
-                $"appointment.description = {description},  " +
-                $"appointment.location = {location}, " +
-                $"appointment.contact = {contact}, " +
-                $"appointment.type = {type}, " +
-                $"appointment.url = {url}, " +
-                $"appointment.start = {start}, " +
-                $"appointment.end = {end}, " +
-                $"appointment.lastUpdateBy = {lastUpdateBy}" +
-                $" where appointment.appointmentId = {appointmentId}; ";
+            string command = $"UPDATE appointment SET appointment.title = '{Title}',  " +
+                $"appointment.description = '{Description}',  " +
+                $"appointment.location = '{Location}', " +
+                $"appointment.contact = '{Contact}', " +
+                $"appointment.type = '{Type}', " +
+                $"appointment.url = '{Url}', " +
+                $"appointment.start ='{Start.ToString("yyyy-MM-dd H:mm:ss")}', " +
+                $"appointment.end = '{End.ToString("yyyy-MM-dd H:mm:ss")}', " +
+                $"appointment.lastUpdateBy = '{LastUpdateBy}'" +
+                $" where appointment.appointmentId = {AppointmentId}; ";
 
             using (MySqlConnection cnn = new MySqlConnection(connectionString))
             {
@@ -263,7 +244,7 @@ namespace Consultant_Scheduling_Mushero
                     }
                     catch (MySql.Data.MySqlClient.MySqlException ex)
                     {
-                        Console.WriteLine("Error " + ex.Number + " \nMessage: " + ex.Message);
+                        Console.WriteLine("Delete_Appointment: Error " + ex.Number + " \nMessage: " + ex.Message);
                     }
                     finally
                     {
@@ -343,7 +324,7 @@ namespace Consultant_Scheduling_Mushero
                     }
                     catch (MySql.Data.MySqlClient.MySqlException ex)
                     {
-                        Console.WriteLine("Error " + ex.Number + " \nMessage: " + ex.Message);
+                        Console.WriteLine("Check Availability: Error " + ex.Number + " \nMessage: " + ex.Message);
                     }
                     finally
                     {

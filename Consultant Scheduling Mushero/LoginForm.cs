@@ -20,10 +20,6 @@ namespace Consultant_Scheduling_Mushero
     {
         public string connectionString = ConfigurationManager.ConnectionStrings["SqlConnection"].ConnectionString;
 
-
-        // TODO: TimeZone compensation
-        // MYSQL server is based in GMT 
-
         public LoginForm()
         {
 
@@ -63,6 +59,12 @@ namespace Consultant_Scheduling_Mushero
             }
         }
 
+
+        /// <summary>
+        /// This Method ensures that there is a password in this box
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void pwTxtBx_Leave(object sender, EventArgs e)
         {
 
@@ -72,9 +74,15 @@ namespace Consultant_Scheduling_Mushero
 
                 pwTxtBx.Text = "Enter password";
 
+                logOnBtn.Enabled = false;
+
                 pwTxtBx.UseSystemPasswordChar = false;
 
                 SelectNextControl(pwTxtBx, true, true, false, true);
+            }
+            else
+            {
+                logOnBtn.Enabled = true;
             }
 
         }

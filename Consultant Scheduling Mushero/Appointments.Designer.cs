@@ -133,23 +133,23 @@ namespace Consultant_Scheduling_Mushero
             // 
             // startDateTime
             // 
-            this.startDateTime.CustomFormat = "dd/MM/yyyy hh:mm";
+            this.startDateTime.CustomFormat = "yyyy/mm/dd  hh:mm";
             this.startDateTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.startDateTime.Location = new System.Drawing.Point(124, 352);
             this.startDateTime.Margin = new System.Windows.Forms.Padding(2);
             this.startDateTime.Name = "startDateTime";
-            this.startDateTime.Size = new System.Drawing.Size(127, 20);
-            this.startDateTime.TabIndex = 6;
+            this.startDateTime.Size = new System.Drawing.Size(140, 20);
+            this.startDateTime.TabIndex = 8;
             // 
             // endDateTime
             // 
-            this.endDateTime.CustomFormat = "dd/MM/yyyy hh:mm";
+            this.endDateTime.CustomFormat = "yyyy/mm/dd  hh:mm";
             this.endDateTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.endDateTime.Location = new System.Drawing.Point(124, 383);
             this.endDateTime.Margin = new System.Windows.Forms.Padding(2);
             this.endDateTime.Name = "endDateTime";
-            this.endDateTime.Size = new System.Drawing.Size(127, 20);
-            this.endDateTime.TabIndex = 7;
+            this.endDateTime.Size = new System.Drawing.Size(140, 20);
+            this.endDateTime.TabIndex = 9;
             // 
             // titleTxtBox
             // 
@@ -157,7 +157,7 @@ namespace Consultant_Scheduling_Mushero
             this.titleTxtBox.Margin = new System.Windows.Forms.Padding(2);
             this.titleTxtBox.Name = "titleTxtBox";
             this.titleTxtBox.Size = new System.Drawing.Size(254, 20);
-            this.titleTxtBox.TabIndex = 10;
+            this.titleTxtBox.TabIndex = 1;
             // 
             // descriptionTxtBox
             // 
@@ -167,7 +167,7 @@ namespace Consultant_Scheduling_Mushero
             this.descriptionTxtBox.Multiline = true;
             this.descriptionTxtBox.Name = "descriptionTxtBox";
             this.descriptionTxtBox.Size = new System.Drawing.Size(254, 82);
-            this.descriptionTxtBox.TabIndex = 11;
+            this.descriptionTxtBox.TabIndex = 3;
             // 
             // urlTxtBox
             // 
@@ -175,7 +175,7 @@ namespace Consultant_Scheduling_Mushero
             this.urlTxtBox.Margin = new System.Windows.Forms.Padding(2);
             this.urlTxtBox.Name = "urlTxtBox";
             this.urlTxtBox.Size = new System.Drawing.Size(254, 20);
-            this.urlTxtBox.TabIndex = 12;
+            this.urlTxtBox.TabIndex = 7;
             // 
             // typeTxtBox
             // 
@@ -183,7 +183,7 @@ namespace Consultant_Scheduling_Mushero
             this.typeTxtBox.Margin = new System.Windows.Forms.Padding(2);
             this.typeTxtBox.Name = "typeTxtBox";
             this.typeTxtBox.Size = new System.Drawing.Size(119, 20);
-            this.typeTxtBox.TabIndex = 13;
+            this.typeTxtBox.TabIndex = 6;
             // 
             // contactTxtBox
             // 
@@ -191,7 +191,7 @@ namespace Consultant_Scheduling_Mushero
             this.contactTxtBox.Margin = new System.Windows.Forms.Padding(2);
             this.contactTxtBox.Name = "contactTxtBox";
             this.contactTxtBox.Size = new System.Drawing.Size(119, 20);
-            this.contactTxtBox.TabIndex = 14;
+            this.contactTxtBox.TabIndex = 5;
             // 
             // saveBtn
             // 
@@ -199,7 +199,7 @@ namespace Consultant_Scheduling_Mushero
             this.saveBtn.Margin = new System.Windows.Forms.Padding(2);
             this.saveBtn.Name = "saveBtn";
             this.saveBtn.Size = new System.Drawing.Size(56, 19);
-            this.saveBtn.TabIndex = 16;
+            this.saveBtn.TabIndex = 10;
             this.saveBtn.Text = "Save";
             this.saveBtn.UseVisualStyleBackColor = true;
             this.saveBtn.Click += new System.EventHandler(this.saveBtn_Click);
@@ -210,7 +210,7 @@ namespace Consultant_Scheduling_Mushero
             this.cnclBtn.Margin = new System.Windows.Forms.Padding(2);
             this.cnclBtn.Name = "cnclBtn";
             this.cnclBtn.Size = new System.Drawing.Size(56, 19);
-            this.cnclBtn.TabIndex = 17;
+            this.cnclBtn.TabIndex = 11;
             this.cnclBtn.Text = "Cancel";
             this.cnclBtn.UseVisualStyleBackColor = true;
             this.cnclBtn.Click += new System.EventHandler(this.cnclBtn_Click);
@@ -225,7 +225,7 @@ namespace Consultant_Scheduling_Mushero
             this.locationComboBx.Location = new System.Drawing.Point(27, 243);
             this.locationComboBx.Name = "locationComboBx";
             this.locationComboBx.Size = new System.Drawing.Size(254, 21);
-            this.locationComboBx.TabIndex = 18;
+            this.locationComboBx.TabIndex = 4;
             // 
             // label9
             // 
@@ -242,7 +242,7 @@ namespace Consultant_Scheduling_Mushero
             this.customerSelection.Location = new System.Drawing.Point(31, 100);
             this.customerSelection.Name = "customerSelection";
             this.customerSelection.Size = new System.Drawing.Size(121, 21);
-            this.customerSelection.TabIndex = 24;
+            this.customerSelection.TabIndex = 2;
             // 
             // Appointments
             // 

@@ -75,8 +75,7 @@ namespace Consultant_Scheduling_Mushero
 
             bool exists = false;
             string command = $"";
-            try
-            {
+           
                 using (MySqlConnection cnn = new MySqlConnection(connectionString))
                 {
 
@@ -105,11 +104,7 @@ namespace Consultant_Scheduling_Mushero
                         cnn.Dispose();
                     }
                 }
-            }
-            catch (MySql.Data.MySqlClient.MySqlException ex)
-            {
-                Console.WriteLine(ex.Message.ToString());
-            }
+           
             return exists;
         }
 
@@ -124,8 +119,7 @@ namespace Consultant_Scheduling_Mushero
                 $" VALUES('{Address1}', '{Address2}', {CityId}, " +
                 $"'{PostalCode}', '{Phone}', '{DateTime.Now.ToString("yyyy-MM-dd H:mm:ss")}','{userName}','{userName}')";
 
-            try
-            {
+            
                 using (MySqlConnection cnn = new MySqlConnection(connectionString))
                 {
                     using (MySqlCommand cmd = new MySqlCommand(command, cnn))
@@ -150,11 +144,7 @@ namespace Consultant_Scheduling_Mushero
                         
                     }
                 }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
+           
 
             return AddressId;
         }
@@ -163,49 +153,45 @@ namespace Consultant_Scheduling_Mushero
         public void updateAddress(string userName)
         {
             string command = "UPDATE address SET address = '"+Address1+"\', address2 = '"+Address2+"\', postalCode = '"+PostalCode+"\', phone = "+Phone+", lastUpdateBy = '"+userName+"\' WHERE addressId = "+AddressId+"";
-            try
+
+            using (MySqlConnection cnn = new MySqlConnection(connectionString))
             {
-                using (MySqlConnection cnn = new MySqlConnection(connectionString))
+                using (MySqlCommand cmd = new MySqlCommand(command, cnn))
                 {
-                    using (MySqlCommand cmd = new MySqlCommand(command, cnn))
+                    cnn.Open();
+
+                    try
                     {
-                        cnn.Open();
 
-                         try
-                        {
-
-                            cmd.ExecuteNonQuery();
-                           
-
-                        }
-                        catch (MySql.Data.MySqlClient.MySqlException ex)
-                        {
-                            Console.WriteLine("Error " + ex.Number + " \nMessage: " + ex.Message);
-                        }
-                        finally
-                        {
-                            cnn.Close();
-                            cnn.Dispose();
-                        }
+                        cmd.ExecuteNonQuery();
                         
-                      
-
-
 
 
                     }
+                    catch (MySql.Data.MySqlClient.MySqlException ex)
+                    {
+                        Console.WriteLine("updateAddress: Error " + ex.Number + " \nMessage: " + ex.Message);
+                    }
+                    finally
+                    {
+                        cnn.Close();
+                        cnn.Dispose();
+                    }
+
+
+
+
+
+
                 }
-            }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
+            }            
         }
 
-        public void getAddressData(int addressId)
+        public int getAddressData(int addressId)
         {
+            AddressId = addressId;
 
-            string command = $"SELECT address, address2, postalCode, phone, cityId FROM address where addressId = '{addressID}'";
+            string command = $"SELECT address, address2, postalCode, phone, cityId FROM address where addressId = '{addressId}'";
 
             
             
@@ -226,27 +212,27 @@ namespace Consultant_Scheduling_Mushero
                             {
                                 while (dr.Read())
                                 {
-                                    Address address = new Address();
-                                    address.AddressId = addressId;
-                                    address.Address1 = dr["address"].ToString();
-                                    address.Address2 = dr["address2"].ToString();
-                                    address.CityId = Convert.ToInt32(dr["active"]);
-                                    address.PostalCode = dr["postalCode"].ToString();
-                                    address.Phone = dr["phone"].ToString();
-                                    City city = new City();
-                                    city.getCityData(CityId);
+                                   
+                                   
+                                   Address1 = dr["address"].ToString();
+                                   Address2 = dr["address2"].ToString();
+                                   CityId = Convert.ToInt32(dr["cityId"]);
+                                   PostalCode = dr["postalCode"].ToString();
+                                   Phone = dr["phone"].ToString();
+                                   
                                 }
                             }
                         }
                     }
                     catch (MySql.Data.MySqlClient.MySqlException ex)
                     {
-                        Console.WriteLine("Error " + ex.Number + " \nMessage: " + ex.Message);
+                        Console.WriteLine("Get Address Data: Error " + ex.Number + " \nMessage: " + ex.Message);
                     }
                   
                     
                 }
             }
+            return CityId;
         }
     }
 }
