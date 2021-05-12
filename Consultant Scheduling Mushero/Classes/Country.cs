@@ -28,16 +28,13 @@ namespace Consultant_Scheduling_Mushero
             set { country = value; }
         }
 
+        //Constructors
 
         public Country()
         {
 
         }
-        //public Country(int countryid, string country, int lastUpdateby)
-        //{
-
-        //}
-
+    
         public Country(int countryId)
         {
             CountryId = countryId;
@@ -46,7 +43,11 @@ namespace Consultant_Scheduling_Mushero
 
       
 
-      
+      /// <summary>
+      /// This method inserts data into the country table
+      /// </summary>
+      /// <param name="userName"></param>
+      /// <returns></returns>
         public int InsertCountry(string userName)
         {
 
@@ -84,6 +85,11 @@ namespace Consultant_Scheduling_Mushero
             }
             return CountryId;
         }
+
+        /// <summary>
+        /// this method executes a command to get information from the country table
+        /// </summary>
+        /// <param name="countryId"></param>
 
         public void getCountryData(int countryId)
         {
@@ -130,7 +136,10 @@ namespace Consultant_Scheduling_Mushero
 
 
 
-
+        /// <summary>
+        /// This method executes a command to update the country table
+        /// </summary>
+        /// <param name="username"></param>
 
 
         public void updateCountry(string username)

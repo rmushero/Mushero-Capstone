@@ -41,17 +41,16 @@ namespace Consultant_Scheduling_Mushero
 
 
         
-
+        /// <summary>
+        /// This builds out the weekly calendar list  
+        /// </summary>
         public void weekCalendar()
         {
           
 
             DateTime startOfWeek = DateTime.Today.AddDays(-(int)DateTime.Today.DayOfWeek);
-            DateTime endOfWeek = startOfWeek.AddDays(7);
-
-           
+            DateTime endOfWeek = startOfWeek.AddDays(7);          
             weeklyDataTable = new DataTable();
-
             weeklyDataTable.Columns.Add("title");
             weeklyDataTable.Columns.Add("start");
             weeklyDataTable.Columns.Add("end");
@@ -71,7 +70,9 @@ namespace Consultant_Scheduling_Mushero
 
         }
 
-
+        /// <summary>
+        /// populates a data table with this months dates and appointments
+        /// </summary>
         private void setMonthlyCalendar()
         {
            
@@ -100,6 +101,9 @@ namespace Consultant_Scheduling_Mushero
 
 
 
+        /// <summary>
+        /// this method gets the current week of year and creates the weekly calendar 
+        /// </summary>
         private void calendarManipulation()
         {
             CultureInfo myCI = new CultureInfo("en-US");
@@ -114,6 +118,10 @@ namespace Consultant_Scheduling_Mushero
         }
 
 
+
+        /// <summary>
+        /// this method sets the days of the week and then adds rows for any appointments 
+        /// </summary>
         private void setWeeklyCalendar()
         {
             DataTable newWeeklyDataTable = new DataTable();
@@ -177,7 +185,11 @@ namespace Consultant_Scheduling_Mushero
             
          
    
-
+        /// <summary>
+        /// this method closes the form
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void exitButton_Click_1(object sender, EventArgs e)
         {
             this.Close();
@@ -185,27 +197,6 @@ namespace Consultant_Scheduling_Mushero
 
 
         
-        private void prevWeekButton_Click_1(object sender, EventArgs e)
-        {
-            if (weekOfTheYear > 0)
-            {
-                weekOfTheYear--;
-                weekLabel.Text = "Week " + weekOfTheYear;
-            }
-            weeklyDataTable.Clear();
-            setWeeklyCalendar();
-        }
-
-        private void nextWeekButton_Click_1(object sender, EventArgs e)
-        {
-            if (weekOfTheYear < 53)
-            {
-                weekOfTheYear++;
-                weekLabel.Text = "Week " + weekOfTheYear;
-            }
-            weeklyDataTable.Clear();
-            setWeeklyCalendar();
-        }
 
         
     }

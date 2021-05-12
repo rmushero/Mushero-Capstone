@@ -104,7 +104,6 @@
     <Compile Include="Classes\City.cs" />
     <Compile Include="Classes\Country.cs" />
     <Compile Include="Classes\Customer.cs" />
-    <Compile Include="Classes\Logs.cs" />
     <Compile Include="Classes\User.cs" />
     <Compile Include="Dashboard.cs">
       <SubType>Form</SubType>

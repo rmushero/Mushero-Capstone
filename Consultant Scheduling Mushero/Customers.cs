@@ -29,13 +29,7 @@ namespace Consultant_Scheduling_Mushero
             currentUser = username;
         }
 
-        public Customers(string username, string type)
-        {
-            InitializeComponent();
-            currentUser = username;
-            createGenericObj();
-        }
-
+        
         // Modify Customer
         public Customers(string username, int id)
         {
@@ -45,6 +39,12 @@ namespace Consultant_Scheduling_Mushero
             currentUser = username;
             populateForm(id);
         }
+
+        /// <summary>
+        /// This method checks if the form is being used for modification and then runs the appropriate method to save the data
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void saveBtn_Click(object sender, EventArgs e)
         {
             if (modification == true)
@@ -60,6 +60,10 @@ namespace Consultant_Scheduling_Mushero
 
         }
 
+
+        /// <summary>
+        /// This method validates the form data and creates a new customer
+        /// </summary>
         private void createNewCustomer()
         {
             if (validateFormData() == true)
@@ -71,6 +75,10 @@ namespace Consultant_Scheduling_Mushero
             }
         }
 
+
+        /// <summary>
+        /// This method validates the existing customer information and updated information and processes it through the database
+        /// </summary>
         private void updateExistingCustomer()
         {
             if (validateFormData() == true)
@@ -81,6 +89,12 @@ namespace Consultant_Scheduling_Mushero
             }
         }
 
+
+        /// <summary>
+        /// This method makes sure you want to close this form and then closes it if you do
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void cancelBtn_Click(object sender, EventArgs e)
         {
 
@@ -103,7 +117,8 @@ namespace Consultant_Scheduling_Mushero
         {
             bool validated = false;
 
-            foreach (var control in Controls.Cast<Control>().Where(c => c is TextBox))
+            
+            foreach (var control in Controls.Cast<Control>().Where(c => c is TextBox)) // Lambda to iterate over the controls to check for missing data.
             {
                 if (string.IsNullOrEmpty(control.Text.ToString()))
                 {
@@ -122,38 +137,6 @@ namespace Consultant_Scheduling_Mushero
 
 
             return validated;
-        }
-
-
-        /// <summary>
-        /// creates a dummy customer for method testing
-        /// </summary>
-        private void createGenericObj()
-        {
-            string _country = "USA";
-            country.Country_name = _country;
-            city.CountryId = country.InsertCountry(currentUser);
-           
-            string _city = "Hermansville";
-            city.CityName = _city;
-            address.CityId = city.insertCity( currentUser);
-            string _addr1 = "W4988 US Highway 2";
-            string _addr2 = "null";
-            string _postal = "49847";
-            string _phone = "920-757-4186";
-            address.Address1 = _addr1;
-            address.Address2 = _addr2;
-            address.PostalCode = _postal;
-            address.Phone = _phone;
-            customer.AddressId = address.insertAddress(currentUser);
-
-            string _name = "Rodney Mushero";
-            sbyte _active = 1;
-            customer.CustomerName = _name;
-            customer.Active = _active;
-
-            int customerID = customer.insertCustomer(currentUser);
-            customer.CustomerId = customerID;
         }
 
 
@@ -256,7 +239,7 @@ namespace Consultant_Scheduling_Mushero
             Console.WriteLine(_phone);
             if (activeCkBx.Checked == true)
                 {
-                    _active = 1; //Not of correct Type
+                    _active = 1; 
                 }
                 else
                 {
@@ -291,11 +274,8 @@ namespace Consultant_Scheduling_Mushero
             customer.updateCustomer(currentUser);
 
         }
-                      
 
-    
-
-
+       
     }
 }
 

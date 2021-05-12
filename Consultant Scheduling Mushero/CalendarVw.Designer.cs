@@ -31,8 +31,6 @@ namespace Consultant_Scheduling_Mushero
         {
             this.apptDataGridView = new System.Windows.Forms.DataGridView();
             this.monthCalendar = new System.Windows.Forms.MonthCalendar();
-            this.nextWeekButton = new System.Windows.Forms.Button();
-            this.prevWeekButton = new System.Windows.Forms.Button();
             this.exitButton = new System.Windows.Forms.Button();
             this.weeklyDataGridView = new System.Windows.Forms.DataGridView();
             this.weekLabel = new System.Windows.Forms.Label();
@@ -70,26 +68,6 @@ namespace Consultant_Scheduling_Mushero
             this.monthCalendar.Name = "monthCalendar";
             this.monthCalendar.ShowTodayCircle = false;
             this.monthCalendar.TabIndex = 11;
-            // 
-            // nextWeekButton
-            // 
-            this.nextWeekButton.Location = new System.Drawing.Point(410, 685);
-            this.nextWeekButton.Name = "nextWeekButton";
-            this.nextWeekButton.Size = new System.Drawing.Size(58, 23);
-            this.nextWeekButton.TabIndex = 16;
-            this.nextWeekButton.Text = "Next Week";
-            this.nextWeekButton.UseVisualStyleBackColor = true;
-            this.nextWeekButton.Click += new System.EventHandler(this.nextWeekButton_Click_1);
-            // 
-            // prevWeekButton
-            // 
-            this.prevWeekButton.Location = new System.Drawing.Point(323, 685);
-            this.prevWeekButton.Name = "prevWeekButton";
-            this.prevWeekButton.Size = new System.Drawing.Size(58, 23);
-            this.prevWeekButton.TabIndex = 15;
-            this.prevWeekButton.Text = "Prev Week";
-            this.prevWeekButton.UseVisualStyleBackColor = true;
-            this.prevWeekButton.Click += new System.EventHandler(this.prevWeekButton_Click_1);
             // 
             // exitButton
             // 
@@ -140,8 +118,6 @@ namespace Consultant_Scheduling_Mushero
             this.Controls.Add(this.weekLabel);
             this.Controls.Add(this.apptDataGridView);
             this.Controls.Add(this.monthCalendar);
-            this.Controls.Add(this.nextWeekButton);
-            this.Controls.Add(this.prevWeekButton);
             this.Controls.Add(this.exitButton);
             this.Controls.Add(this.weeklyDataGridView);
             this.Name = "CalendarVw";
@@ -158,8 +134,6 @@ namespace Consultant_Scheduling_Mushero
 
         private System.Windows.Forms.DataGridView apptDataGridView;
         private System.Windows.Forms.MonthCalendar monthCalendar;
-        private System.Windows.Forms.Button nextWeekButton;
-        private System.Windows.Forms.Button prevWeekButton;
         private System.Windows.Forms.Button exitButton;
         private System.Windows.Forms.DataGridView weeklyDataGridView;
         private System.Windows.Forms.Label weekLabel;

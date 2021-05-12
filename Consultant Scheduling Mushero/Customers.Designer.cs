@@ -53,16 +53,17 @@ namespace Consultant_Scheduling_Mushero
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(22, 50);
+            this.label2.Location = new System.Drawing.Point(173, 12);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(38, 13);
             this.label2.TabIndex = 17;
             this.label2.Text = "Phone";
+
             // 
             // label7
             // 
             this.label7.AutoSize = true;
-            this.label7.Location = new System.Drawing.Point(332, 59);
+            this.label7.Location = new System.Drawing.Point(8, 176);
             this.label7.Name = "label7";
             this.label7.Size = new System.Drawing.Size(64, 13);
             this.label7.TabIndex = 14;
@@ -71,7 +72,7 @@ namespace Consultant_Scheduling_Mushero
             // label6
             // 
             this.label6.AutoSize = true;
-            this.label6.Location = new System.Drawing.Point(168, 59);
+            this.label6.Location = new System.Drawing.Point(8, 137);
             this.label6.Name = "label6";
             this.label6.Size = new System.Drawing.Size(43, 13);
             this.label6.TabIndex = 13;
@@ -80,7 +81,7 @@ namespace Consultant_Scheduling_Mushero
             // label5
             // 
             this.label5.AutoSize = true;
-            this.label5.Location = new System.Drawing.Point(3, 59);
+            this.label5.Location = new System.Drawing.Point(8, 98);
             this.label5.Name = "label5";
             this.label5.Size = new System.Drawing.Size(24, 13);
             this.label5.TabIndex = 12;
@@ -89,7 +90,7 @@ namespace Consultant_Scheduling_Mushero
             // label4
             // 
             this.label4.AutoSize = true;
-            this.label4.Location = new System.Drawing.Point(234, 17);
+            this.label4.Location = new System.Drawing.Point(8, 59);
             this.label4.Name = "label4";
             this.label4.Size = new System.Drawing.Size(54, 13);
             this.label4.TabIndex = 11;
@@ -106,7 +107,7 @@ namespace Consultant_Scheduling_Mushero
             // 
             // postalTxtBox
             // 
-            this.postalTxtBox.Location = new System.Drawing.Point(335, 75);
+            this.postalTxtBox.Location = new System.Drawing.Point(11, 192);
             this.postalTxtBox.Name = "postalTxtBox";
             this.postalTxtBox.Size = new System.Drawing.Size(134, 20);
             this.postalTxtBox.TabIndex = 8;
@@ -120,7 +121,7 @@ namespace Consultant_Scheduling_Mushero
             // 
             // addr2TxtBox
             // 
-            this.addr2TxtBox.Location = new System.Drawing.Point(237, 33);
+            this.addr2TxtBox.Location = new System.Drawing.Point(11, 75);
             this.addr2TxtBox.Name = "addr2TxtBox";
             this.addr2TxtBox.Size = new System.Drawing.Size(229, 20);
             this.addr2TxtBox.TabIndex = 5;
@@ -131,7 +132,7 @@ namespace Consultant_Scheduling_Mushero
             this.activeCkBx.CheckAlign = System.Drawing.ContentAlignment.MiddleRight;
             this.activeCkBx.Checked = true;
             this.activeCkBx.CheckState = System.Windows.Forms.CheckState.Checked;
-            this.activeCkBx.Location = new System.Drawing.Point(33, 106);
+            this.activeCkBx.Location = new System.Drawing.Point(16, 66);
             this.activeCkBx.Name = "activeCkBx";
             this.activeCkBx.Size = new System.Drawing.Size(62, 17);
             this.activeCkBx.TabIndex = 13;
@@ -140,7 +141,7 @@ namespace Consultant_Scheduling_Mushero
             // 
             // cancelBtn
             // 
-            this.cancelBtn.Location = new System.Drawing.Point(287, 289);
+            this.cancelBtn.Location = new System.Drawing.Point(155, 341);
             this.cancelBtn.Name = "cancelBtn";
             this.cancelBtn.Size = new System.Drawing.Size(75, 23);
             this.cancelBtn.TabIndex = 19;
@@ -150,7 +151,7 @@ namespace Consultant_Scheduling_Mushero
             // 
             // saveBtn
             // 
-            this.saveBtn.Location = new System.Drawing.Point(179, 289);
+            this.saveBtn.Location = new System.Drawing.Point(47, 341);
             this.saveBtn.Name = "saveBtn";
             this.saveBtn.Size = new System.Drawing.Size(75, 23);
             this.saveBtn.TabIndex = 18;
@@ -160,7 +161,7 @@ namespace Consultant_Scheduling_Mushero
             // 
             // cityTxtBox
             // 
-            this.cityTxtBox.Location = new System.Drawing.Point(6, 75);
+            this.cityTxtBox.Location = new System.Drawing.Point(11, 114);
             this.cityTxtBox.Name = "cityTxtBox";
             this.cityTxtBox.Size = new System.Drawing.Size(134, 20);
             this.cityTxtBox.TabIndex = 6;
@@ -169,19 +170,19 @@ namespace Consultant_Scheduling_Mushero
             // 
             this.nameTxtBox.Location = new System.Drawing.Point(22, 27);
             this.nameTxtBox.Name = "nameTxtBox";
-            this.nameTxtBox.Size = new System.Drawing.Size(100, 20);
+            this.nameTxtBox.Size = new System.Drawing.Size(145, 20);
             this.nameTxtBox.TabIndex = 11;
             // 
             // phoneTextBox
             // 
-            this.phoneTextBox.Location = new System.Drawing.Point(22, 65);
+            this.phoneTextBox.Location = new System.Drawing.Point(173, 27);
             this.phoneTextBox.Name = "phoneTextBox";
-            this.phoneTextBox.Size = new System.Drawing.Size(100, 20);
+            this.phoneTextBox.Size = new System.Drawing.Size(138, 20);
             this.phoneTextBox.TabIndex = 12;
             // 
             // countryTxtBox
             // 
-            this.countryTxtBox.Location = new System.Drawing.Point(171, 75);
+            this.countryTxtBox.Location = new System.Drawing.Point(11, 153);
             this.countryTxtBox.Name = "countryTxtBox";
             this.countryTxtBox.Size = new System.Drawing.Size(134, 20);
             this.countryTxtBox.TabIndex = 7;
@@ -198,9 +199,9 @@ namespace Consultant_Scheduling_Mushero
             this.groupBox1.Controls.Add(this.addr2TxtBox);
             this.groupBox1.Controls.Add(this.cityTxtBox);
             this.groupBox1.Controls.Add(this.countryTxtBox);
-            this.groupBox1.Location = new System.Drawing.Point(25, 148);
+            this.groupBox1.Location = new System.Drawing.Point(22, 89);
             this.groupBox1.Name = "groupBox1";
-            this.groupBox1.Size = new System.Drawing.Size(496, 135);
+            this.groupBox1.Size = new System.Drawing.Size(274, 246);
             this.groupBox1.TabIndex = 14;
             this.groupBox1.TabStop = false;
             this.groupBox1.Text = "Address Information";
@@ -218,7 +219,7 @@ namespace Consultant_Scheduling_Mushero
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(530, 326);
+            this.ClientSize = new System.Drawing.Size(323, 387);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.activeCkBx);
             this.Controls.Add(this.cancelBtn);

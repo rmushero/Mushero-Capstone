@@ -25,7 +25,7 @@ namespace Consultant_Scheduling_Mushero
         /// <param name="user"></param>
         public Appointments(User user)
         {
-            populateLocations();
+          
             // Set current user so we can get the customer list
             currentUser = user;
           
@@ -44,14 +44,17 @@ namespace Consultant_Scheduling_Mushero
 
         // Modification Form 
 
-
+        /// <summary>
+        /// this constructor is used for modifying customer data
+        /// </summary>
+        /// <param name="id"></param>
+        /// <param name="user"></param>
         public Appointments(int id, User user)
         {
             InitializeComponent();
             // Set Modification
             modificationMode = true;
             // Populate Location List
-            populateLocations();
             newApt.AppointmentId = id;
             currentUser = user;
             populateForm(newApt.AppointmentId);
@@ -62,6 +65,11 @@ namespace Consultant_Scheduling_Mushero
            
         }
 
+
+        /// <summary>
+        /// this method populates the customer data on the form 
+        /// </summary>
+        /// <param name="username"></param>
         public void populateCustomer(string username)
         {
             string command = "Select customerId, customerName from customer where createdBy = '" + username + "\'";
@@ -105,7 +113,10 @@ namespace Consultant_Scheduling_Mushero
 
       
 
-
+        /// <summary>
+        /// this method populates the selected appointment in the form for modifications
+        /// </summary>
+        /// <param name="appointmentID"></param>
         public void populateForm(int appointmentID)
         {
             // Set the data for the appointment
@@ -118,7 +129,7 @@ namespace Consultant_Scheduling_Mushero
             descriptionTxtBox.Text = newApt.Description.ToString();
 
             //Set the Location combo box
-            locationComboBx.SelectedItem = newApt.Location.ToString();
+            locationtxtBox.Text = newApt.Location.ToString();
 
             //Set Contact Box
             contactTxtBox.Text = newApt.Contact.ToString();
@@ -130,23 +141,15 @@ namespace Consultant_Scheduling_Mushero
             urlTxtBox.Text = newApt.Url.ToString();
 
             //Set Start Time
-          startDateTime.Value = newApt.Start.AddHours(getOffSet());
+          startDateTime.Value = newApt.Start.Add(-getCurrentOffset());
 
             //Set End Time
-           endDateTime.Value = newApt.End.AddHours(getOffSet());
+           endDateTime.Value = newApt.End.Add(-getCurrentOffset());
         }
 
 
 
-        // EVENTS 
-
-        private void populateLocations()
-        {
-            dataSource.Add("Phoenix, Arizona", -7);
-            dataSource.Add("New York, New York", -5);
-            dataSource.Add("London, England", 0);
-        }
-
+       
         /// <summary>
         /// Method for Action when Save Button is Clicked
         /// </summary>
@@ -242,28 +245,44 @@ namespace Consultant_Scheduling_Mushero
 
             if (validateFields() == true)
             {
-
-                if (validateExistingApts() == true)
+                if (modificationMode == true)
                 {
                     if (validateDates() == true)
                     {
-                        if (validateLocation() == true)
-                        {
-                            validated = true;
-                        }
-                        else
-                        {
-                            return validated;
-                        }
+
+
+                        validated = true;
+
                     }
                     else
                     {
                         return validated;
                     }
+
                 }
-               else
+                else
                 {
-                    return validated;
+
+                    if (validateExistingApts() == true)
+                    {
+                        if (validateDates() == true)
+                        {
+
+
+                            validated = true;
+
+                        }
+                        else
+                        {
+                            return validated;
+                        }
+
+
+                    }
+                    else
+                    {
+                        return validated;
+                    }
                 }
             }
             else
@@ -274,13 +293,16 @@ namespace Consultant_Scheduling_Mushero
             return validated;
         }
 
-
+        /// <summary>
+        /// validate that all fields are filled out.
+        /// </summary>
+        /// <returns></returns>
         public bool validateFields()
         {
             int count = 0;
             bool validated = false;
             // Ensure all fields are filled out
-            foreach (var control in Controls.Cast<Control>().Where(c => c is TextBox))
+            foreach (var control in Controls.Cast<Control>().Where(c => c is TextBox)) // Lambda to Iterate over all fields 
             {
                 if (string.IsNullOrEmpty(control.Text.ToString()))
                 {
@@ -327,32 +349,38 @@ namespace Consultant_Scheduling_Mushero
                 MessageBox.Show(message);
 
             }
-            else if (startDateTime.Value.Hour < 09 || endDateTime.Value.Hour > 17 )
-            {
-                const string message = "You cannot book an appointment outside of business hours \n 9:00 AM - 5:00 PM local time";
-                MessageBox.Show(message);
-            }
+            //else if (startDateTime.Value.Hour < 09 || endDateTime.Value.Hour > 17 )
+            //{
+            //    const string message = "You cannot book an appointment outside of business hours \n 9:00 AM - 5:00 PM local time";
+            //    MessageBox.Show(message);
+            //}
             else
             {
                 newApt.Start = DateTime.Now;
                 validated = true;
 
             }
+            
             return validated;
         }
 
+        /// <summary>
+        /// Validate that there are no existing appointments to be overwritten
+        /// </summary>
+        /// <returns></returns>
         public bool validateExistingApts()
         {
             bool validated = false;
 
-            DateTime tempStart = startDateTime.Value.AddHours(getOnSet());
-            DateTime tempEnd = endDateTime.Value.AddHours(getOnSet());
-
+            DateTime tempStart = startDateTime.Value.Add(-getCurrentOffset());
+            DateTime tempEnd = endDateTime.Value.Add(-getCurrentOffset());
+           
           
 
             if (newApt.checkAvailability(tempStart, tempEnd) > 0)
             {
                 MessageBox.Show("You cannot create an appointment that overlaps other appointments. Check your Calendar and try again.");
+
             }
             else
             {
@@ -364,22 +392,7 @@ namespace Consultant_Scheduling_Mushero
             return validated;
         }
 
-        public bool validateLocation()
-        {
-            bool validated = false;
-
-            if (locationComboBx.SelectedItem == null)
-            {
-                MessageBox.Show("Please Select a Location");
-            }
-            else
-            {
-                validated = true;
-            }
-
-
-            return validated;
-        }
+        
 
         /// <summary>
         /// This method collects data from the form and submits it to the database
@@ -393,12 +406,12 @@ namespace Consultant_Scheduling_Mushero
             newApt.UserID = currentUser.UserID;
             newApt.Title = titleTxtBox.Text.ToString();
             newApt.Description = descriptionTxtBox.Text.ToString();
-            newApt.Location = locationComboBx.Text.ToString();
+            newApt.Location = locationtxtBox.Text.ToString();
             newApt.Contact = contactTxtBox.Text.ToString();
             newApt.Type = typeTxtBox.Text.ToString();
             newApt.Url = urlTxtBox.Text.ToString();
-            newApt.Start = startDateTime.Value.AddHours(getOnSet());
-            newApt.End = endDateTime.Value.AddHours(getOnSet());
+            newApt.Start = startDateTime.Value.Add(getCurrentOffset());
+            newApt.End = endDateTime.Value.Add(getCurrentOffset());
             newApt.CustomerID = Convert.ToInt32(customerSelection.SelectedValue);
             try
             {
@@ -431,12 +444,12 @@ namespace Consultant_Scheduling_Mushero
             newApt.UserID = currentUser.UserID;
             newApt.Title = titleTxtBox.Text.ToString();
             newApt.Description = descriptionTxtBox.Text.ToString();
-            newApt.Location = locationComboBx.Text.ToString();
+            newApt.Location = locationtxtBox.Text.ToString();
             newApt.Contact = contactTxtBox.Text.ToString();
             newApt.Type = typeTxtBox.Text.ToString();
             newApt.Url = urlTxtBox.Text.ToString();
-            newApt.Start =startDateTime.Value.AddHours(getOnSet()); 
-            newApt.End = endDateTime.Value.AddHours(getOnSet()); 
+            newApt.Start = startDateTime.Value.Add(getCurrentOffset());
+            newApt.End = endDateTime.Value.Add(getCurrentOffset());
             newApt.CustomerID = Convert.ToInt32(customerSelection.SelectedValue);
 
             try
@@ -458,39 +471,19 @@ namespace Consultant_Scheduling_Mushero
 
 
         /// <summary>
-        /// Gets the difference between GMT and currently selected location
+        /// gett difference between current time locally and gmt
         /// </summary>
-        public double getOffSet()
+        /// <returns></returns>
+        public TimeSpan getCurrentOffset()
         {
-            int offset = 0;
-
-            foreach (KeyValuePair<string, double> selection in dataSource)
-            {
-                if (locationComboBx.Text == selection.Key)
-                {
-                    offset = Convert.ToInt32(selection.Value);
-                }
-            }
+            // Initialize the offset to convert analyzed meetings to current local
+            // This is the current time
+            DateTime rightNow = DateTime.Now;
+            TimeSpan offset;
+            offset = TimeZone.CurrentTimeZone.GetUtcOffset(rightNow);
             return offset;
 
         }
-
-        public double getOnSet()
-        {
-            int offset = 0;
-
-            foreach (KeyValuePair<string, double> selection in dataSource)
-            {
-                if (locationComboBx.Text == selection.Key)
-                {
-                  double  temp = selection.Value;
-                    offset = Convert.ToInt32(temp = selection.Value *-1);
-                }
-            }
-            return offset;
-
-        }
-
 
 
     }

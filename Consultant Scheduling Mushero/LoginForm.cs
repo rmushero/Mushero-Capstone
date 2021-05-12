@@ -27,34 +27,46 @@ namespace Consultant_Scheduling_Mushero
 
         }
 
+        /// <summary>
+        /// Close the application when the cancel button is clicked
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void cancelBtn_Click(object sender, EventArgs e)
         {
             Application.Exit();
         }
 
+        /// <summary>
+        /// Get the username and password from the form and look them up in the database
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void logOnBtn_Click(object sender, EventArgs e)
         {
             string username = unTxtBx.Text.ToString();
             string password = pwTxtBx.Text.ToString();
 
-
+            //creates a new user 
             User user = new User();
 
+            //Looks for the user account based on username and password 
             user.UserID = user.FindUserAccount(username, password);
            
-
+            //checks if there is a result 
             if (user.UserID > 0)
             {
-
+                //Creates dashboard object 
                 Dashboard db = new Dashboard(user, username);
-                Logs log = new Logs(user.UserID, "Log On Attempt");
+                //Creates a new log
+               
                 writeLog(user.UserID);
                 db.Show();
                 this.Hide();
             }
             else
             {
-                Logs log = new Logs(username, "Failed Logon Attempt - User Does not Exist");
+                writeLog(user.UserID);
                 MessageBox.Show("Incorrect Username or Password");
             }
         }
@@ -115,7 +127,11 @@ namespace Consultant_Scheduling_Mushero
 
         }
 
-        
+        /// <summary>
+        /// This method clears the password box when someone clicks into it
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void pwTxtBx_Enter(object sender, EventArgs e)
         {
             pwTxtBx.Clear();

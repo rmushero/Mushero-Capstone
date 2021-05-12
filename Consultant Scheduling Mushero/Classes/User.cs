@@ -54,6 +54,13 @@ namespace Consultant_Scheduling_Mushero
 
         public string connectionString = ConfigurationManager.ConnectionStrings["SqlConnection"].ConnectionString;
 
+
+        /// <summary>
+        /// Finder user account. If present return an integer;
+        /// </summary>
+        /// <param name="username"></param>
+        /// <param name="password"></param>
+        /// <returns></returns>
         public int FindUserAccount(string username, string password)
         {
             int userID = 0;
@@ -89,6 +96,11 @@ namespace Consultant_Scheduling_Mushero
             return userID;
         }
 
+
+        /// <summary>
+        /// Get all of the users appointments with refined data
+        /// </summary>
+        /// <returns></returns>
         public DataTable userApts()
         {
             DataTable list = new DataTable();
@@ -126,14 +138,8 @@ namespace Consultant_Scheduling_Mushero
             return list;
         }
 
-      public DataTable getWeeklyAppointments()
-        {
-            DataTable appts = new DataTable();
 
-            return appts;
-        }
-
-
+        // get all appointments for the user with all columns
         public DataTable getAppointments()
         {
             string command = "SELECT * FROM appointment a WHERE userId = " + UserID + " order by start asc";

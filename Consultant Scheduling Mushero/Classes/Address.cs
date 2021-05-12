@@ -70,45 +70,11 @@ namespace Consultant_Scheduling_Mushero
 
 
 
-        public bool checkAddressExist(string address)
-        {
-
-            bool exists = false;
-            string command = $"";
-           
-                using (MySqlConnection cnn = new MySqlConnection(connectionString))
-                {
-
-                    using (MySqlCommand cmd = new MySqlCommand(command, cnn))
-                    {
-                        cnn.Open();
-                       
-
-
-                        // run query 
-                        cmd.ExecuteNonQuery();
-
-                        var addressId = int.Parse(cmd.Parameters["_addressId"].Value.ToString());
-
-
-                        if (addressId > 0)
-                        {
-                            exists = true;
-                        }
-                        else
-                        {
-                            return false;
-                        }
-
-                        cnn.Close();
-                        cnn.Dispose();
-                    }
-                }
-           
-            return exists;
-        }
-
-
+        /// <summary>
+        /// this method inserts the address into the database
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns></returns>
 
         public int insertAddress(string userName)
         {
@@ -149,7 +115,10 @@ namespace Consultant_Scheduling_Mushero
             return AddressId;
         }
 
-        
+        /// <summary>
+        /// this method updates the current address
+        /// </summary>
+        /// <param name="userName"></param>
         public void updateAddress(string userName)
         {
             string command = "UPDATE address SET address = '"+Address1+"\', address2 = '"+Address2+"\', postalCode = '"+PostalCode+"\', phone = "+Phone+", lastUpdateBy = '"+userName+"\' WHERE addressId = "+AddressId+"";
@@ -186,6 +155,12 @@ namespace Consultant_Scheduling_Mushero
                 }
             }            
         }
+
+        /// <summary>
+        /// this method gets address data using the Address ID
+        /// </summary>
+        /// <param name="addressId"></param>
+        /// <returns></returns>
 
         public int getAddressData(int addressId)
         {

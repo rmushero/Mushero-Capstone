@@ -89,10 +89,17 @@ namespace Consultant_Scheduling_Mushero
             }
             catch (MySql.Data.MySqlClient.MySqlException ex)
             {
-                Console.WriteLine(ex.Message.ToString());
+                
+               Console.WriteLine(ex.Message.ToString());
             }
             return exists;
         }
+
+        /// <summary>
+        /// this method inserts the city into the database
+        /// </summary>
+        /// <param name="lastUpdateBy"></param>
+        /// <returns></returns>
         public int insertCity( string lastUpdateBy)
         {
 
@@ -130,6 +137,11 @@ namespace Consultant_Scheduling_Mushero
 
         
 
+
+        /// <summary>
+        /// this method updates the city
+        /// </summary>
+        /// <param name="username"></param>
         public void updateCity(string username)
         {
 
@@ -160,7 +172,11 @@ namespace Consultant_Scheduling_Mushero
                 }
         }
 
-
+        /// <summary>
+        /// this method gets the city based on the city ID
+        /// </summary>
+        /// <param name="cityId"></param>
+        /// <returns></returns>
         public int getCityData(int cityId)
         {
 

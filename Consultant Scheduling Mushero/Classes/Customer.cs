@@ -64,53 +64,15 @@ namespace Consultant_Scheduling_Mushero
 
         public string connectionString = ConfigurationManager.ConnectionStrings["SqlConnection"].ConnectionString;
 
-        public bool checkCustomerExist(string customerName, string address1)
-        {
-
-            bool exists = false;
 
 
-            string command = "SELECT customerId, customer.active FROM customer WHERE customer.customerName = '" + customerName + "\' ";
+       
 
-            try
-            {
-                using (MySqlConnection cnn = new MySqlConnection(connectionString))
-                {
-
-                    using (MySqlCommand cmd = new MySqlCommand(command, cnn))
-                    {
-                        cnn.Open();
-
-
-                        // run query 
-                        cmd.ExecuteNonQuery();
-
-                        var custId = int.Parse(cmd.Parameters["customerId"].Value.ToString());
-
-                        var isActive = int.Parse(cmd.Parameters["active"].Value.ToString());
-
-                        if (custId > 0 && isActive > 0)
-                        {
-                            exists = true;
-                        }
-                        else
-                        {
-                            return false;
-                        }
-
-                        cnn.Close();
-                        cnn.Dispose();
-                    }
-                }
-            }
-            catch (MySql.Data.MySqlClient.MySqlException ex)
-            {
-                Console.WriteLine(ex.Message.ToString());
-            }
-            return exists;
-        }
-
-        // CREATE 
+        /// <summary>
+        /// this method inserts customer data in to the database
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
         public int insertCustomer(string username)
         {
             string command = $"INSERT INTO customer (customerName, addressId, " +
@@ -151,6 +113,11 @@ namespace Consultant_Scheduling_Mushero
         }
 
 
+        /// <summary>
+        /// this method gets customer data from the database using the customer ID
+        /// </summary>
+        /// <param name="customerId"></param>
+        /// <returns></returns>
         public int getCustomerData(int customerId)
         {
             CustomerId = customerId;
@@ -194,6 +161,12 @@ namespace Consultant_Scheduling_Mushero
             return AddressId;
         }
 
+
+        /// <summary>
+        /// This method gets the customer information for the customers table 
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
         public DataTable getCustomersforTable(string username)
         {
 
@@ -243,11 +216,10 @@ namespace Consultant_Scheduling_Mushero
             return customers;
         }
 
-
-
-
-
-        // UPDATE 
+        /// <summary>
+        /// This method updates the customer in the database
+        /// </summary>
+        /// <param name="Username"></param>
         public void updateCustomer(string Username)
         {
             string command = $"UPDATE customer SET customerName = '{CustomerName}', active ={Active}," +
@@ -285,9 +257,15 @@ namespace Consultant_Scheduling_Mushero
                 Console.WriteLine(ex.ToString());
             }
         }
-
+        /// <summary>
+        /// this method deletes the customer from the database
+        /// </summary>
+        /// <param name="CustomerID"></param>
+        /// <returns></returns>
         public bool deleteCustomer(int CustomerID)
         {
+
+            // Delete all appointments first 
             bool deleted = false;
             string command2 = "DELETE from appointment where customerId =" + CustomerID + "";
 
@@ -321,6 +299,8 @@ namespace Consultant_Scheduling_Mushero
                 }
             }
 
+
+            // delete from weakest table to strongest table
             string command = "DELETE c, ad, ct, ctry " +
             "from customer c " +
             "inner join address ad on c.addressId = ad.addressID " +

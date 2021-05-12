@@ -94,11 +94,17 @@ namespace Consultant_Scheduling_Mushero
 
 
 
+
+        /// <summary>
+        /// This method creates an appointment and inserts it into the database
+        /// </summary>
+        /// <param name="username"></param>
+        /// <returns></returns>
         public bool Create_Appointment(string username)
         {
             bool appointmentCreated = false;
             string command = $"INSERT INTO appointment(customerId, userId, title, description, location, contact, type, url, start, end, createDate, createdBy, lastUpdateBy)" +
-                $"VALUES('{CustomerID}', '{UserID}', '{Title}', '{Description}','{Location}','{Contact}', '{Type}', '{Url}', '{Start.ToString("yyyy-MM-dd H:mm:ss")}', '{End.ToString("yyyy-MM-dd H:mm:ss")}', '{DateTime.Now.ToString("yyyy-MM-dd H:mm:ss")}','{username }','{username}')";
+                $"VALUES('{CustomerID}', '{UserID}', '{Title}', '{Description}','{Location}','{Contact}', '{Type}', '{Url}', '{Start.ToString("yyyy-MM-dd H:mm")}', '{End.ToString("yyyy-MM-dd H:mm")}', '{DateTime.Now.ToString("yyyy-MM-dd H:mm")}','{username }','{username}')";
 
             
             try
@@ -143,7 +149,11 @@ namespace Consultant_Scheduling_Mushero
         }
 
 
-        // Get appointments
+      /// <summary>
+      /// this method gets the appointments under the current user id
+      /// </summary>
+      /// <param name="userID"></param>
+      /// <returns></returns>
 
         public DataTable getAppointments(int userID)
         {
@@ -180,7 +190,10 @@ namespace Consultant_Scheduling_Mushero
             return appointments;
         }
 
-
+        /// <summary>
+        /// this method updates the appointment that is being modified.
+        /// </summary>
+        /// <returns></returns>
         public bool Update_Appointment()
         {
 
@@ -225,6 +238,11 @@ namespace Consultant_Scheduling_Mushero
             return aptUpdated;
         }
 
+
+        /// <summary>
+        /// this method deletes the appointment
+        /// </summary>
+        /// <param name="appointmentId"></param>
         public void Delete_Appointment(int appointmentId)
         {
             string command = "DELETE FROM appointment WHERE appointmentId =" + appointmentId + "";
@@ -257,6 +275,12 @@ namespace Consultant_Scheduling_Mushero
             }
         }
 
+
+
+        /// <summary>
+        /// this method gets the currently selected appointment by ID
+        /// </summary>
+        /// <param name="appointmentID"></param>
         public void Get_Selected_Appointment(int appointmentID)
         {
             DataTable appointmentData = new DataTable();
@@ -286,6 +310,8 @@ namespace Consultant_Scheduling_Mushero
                             Url = Convert.ToString(dr["url"]);
                             Start = Convert.ToDateTime(dr["start"]);
                             End = Convert.ToDateTime(dr["end"]);
+                            Start.Add(getCurrentOffset());
+                            End.Add(getCurrentOffset());
 
                         }
 
@@ -300,14 +326,37 @@ namespace Consultant_Scheduling_Mushero
             }
         }
 
+        /// <summary>
+        ///  this method gets the current time span offset for current timezone vs gmt
+        /// </summary>
+        /// <returns></returns>
+        public TimeSpan getCurrentOffset()
+        {
+            // Initialize the offset to convert analyzed meetings to current local
+            // This is the current time
+            DateTime rightNow = DateTime.Now;
+            TimeSpan offset;
+            offset = TimeZone.CurrentTimeZone.GetUtcOffset(rightNow);
+            return offset;
+
+        }
+
+
+
+        /// <summary>
+        /// This method checks to see if an appointment is being modified within the restrictions
+        /// </summary>
+        /// <param name="start"></param>
+        /// <param name="end"></param>
+        /// <returns></returns>
 
         public int checkAvailability(DateTime start, DateTime end)
         {
            
 
-            string sql =$"SELECT count(*) from appointment where (start <= '{start.ToString("yyyy-MM -dd H:mm:ss")}' and end >= '{end.ToString("yyyy-MM-dd H:mm:ss")}') or " +
-                $"(start <= '{end.ToString("yyyy-MM-dd H: mm: ss")}' and end >= '{start.ToString("yyyy-MM-dd hh:mm:ss")}') " +
-                $"or (start >= '{start.ToString("yyyy-MM-dd H:mm:ss")}' and end <= '{end.ToString("yyyy-MM-dd hh:mm:ss")}')";
+            string sql =$"SELECT count(*) from appointment where (start <= '{start.Add(getCurrentOffset()).ToString("yyyy-MM-dd H:mm:ss")}' and end >= '{end.Add(getCurrentOffset()).ToString("yyyy-MM-dd H:mm:ss")}') or " +
+                $"(start <= '{end.Add(getCurrentOffset()).ToString("yyyy-MM-dd H: mm: ss")}' and end >= '{start.Add(getCurrentOffset()).ToString("yyyy-MM-dd hh:mm:ss")}') " +
+                $"or (start >= '{start.Add(getCurrentOffset()).ToString("yyyy-MM-dd H:mm:ss")}' and end <= '{end.Add(getCurrentOffset()).ToString("yyyy-MM-dd hh:mm:ss")}')";
            
 
             int count = 0;
