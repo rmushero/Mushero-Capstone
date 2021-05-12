@@ -38,25 +38,19 @@ namespace Consultant_Scheduling_Mushero
             this.label2 = new System.Windows.Forms.Label();
             this.menuStrip1 = new System.Windows.Forms.MenuStrip();
             this.toolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
-            this.refreshToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.settingsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.logOutToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.exitAltF4ToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.customerToolStripMenuItem1 = new System.Windows.Forms.ToolStripMenuItem();
             this.addCustomerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.modifyCustomerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.testCustomerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteCustomerToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.appointmentToolStripMenuItem2 = new System.Windows.Forms.ToolStripMenuItem();
             this.addAppointmentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.modifyAppointmentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.deleteAppointmentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.genericAppointmentToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.viewToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.reportsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.calendarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.customersToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
-            this.appointmentsToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+            this.refreshBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.customerTable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.appointmentTable)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -73,7 +67,7 @@ namespace Consultant_Scheduling_Mushero
             this.customerTable.AllowUserToDeleteRows = false;
             this.customerTable.AllowUserToResizeColumns = false;
             this.customerTable.AllowUserToResizeRows = false;
-            this.customerTable.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.ColumnHeader;
+            this.customerTable.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.customerTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.customerTable.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
             this.customerTable.Location = new System.Drawing.Point(14, 42);
@@ -85,19 +79,18 @@ namespace Consultant_Scheduling_Mushero
             this.customerTable.RowHeadersWidth = 51;
             this.customerTable.RowTemplate.Height = 24;
             this.customerTable.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.customerTable.Size = new System.Drawing.Size(732, 173);
+            this.customerTable.Size = new System.Drawing.Size(732, 151);
             this.customerTable.TabIndex = 0;
             // 
             // appointmentTable
             // 
             this.appointmentTable.AllowUserToAddRows = false;
             this.appointmentTable.AllowUserToDeleteRows = false;
-            this.appointmentTable.AllowUserToResizeColumns = false;
             this.appointmentTable.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.appointmentTable.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
-            this.appointmentTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
+            this.appointmentTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.appointmentTable.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.appointmentTable.Location = new System.Drawing.Point(11, 250);
+            this.appointmentTable.Location = new System.Drawing.Point(14, 234);
             this.appointmentTable.Margin = new System.Windows.Forms.Padding(2);
             this.appointmentTable.MultiSelect = false;
             this.appointmentTable.Name = "appointmentTable";
@@ -106,7 +99,7 @@ namespace Consultant_Scheduling_Mushero
             this.appointmentTable.RowHeadersWidth = 51;
             this.appointmentTable.RowTemplate.Height = 24;
             this.appointmentTable.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.FullRowSelect;
-            this.appointmentTable.Size = new System.Drawing.Size(735, 222);
+            this.appointmentTable.Size = new System.Drawing.Size(735, 212);
             this.appointmentTable.TabIndex = 1;
             // 
             // label1
@@ -122,7 +115,7 @@ namespace Consultant_Scheduling_Mushero
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(11, 226);
+            this.label2.Location = new System.Drawing.Point(11, 206);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(71, 13);
@@ -147,38 +140,15 @@ namespace Consultant_Scheduling_Mushero
             // toolStripMenuItem1
             // 
             this.toolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
-            this.refreshToolStripMenuItem,
-            this.settingsToolStripMenuItem,
-            this.logOutToolStripMenuItem,
             this.exitAltF4ToolStripMenuItem});
             this.toolStripMenuItem1.Name = "toolStripMenuItem1";
             this.toolStripMenuItem1.Size = new System.Drawing.Size(37, 20);
             this.toolStripMenuItem1.Text = "File";
             // 
-            // refreshToolStripMenuItem
-            // 
-            this.refreshToolStripMenuItem.Name = "refreshToolStripMenuItem";
-            this.refreshToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.refreshToolStripMenuItem.Text = "Refresh";
-            this.refreshToolStripMenuItem.Click += new System.EventHandler(this.refreshToolStripMenuItem_Click);
-            // 
-            // settingsToolStripMenuItem
-            // 
-            this.settingsToolStripMenuItem.Name = "settingsToolStripMenuItem";
-            this.settingsToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.settingsToolStripMenuItem.Text = "Settings";
-            // 
-            // logOutToolStripMenuItem
-            // 
-            this.logOutToolStripMenuItem.Name = "logOutToolStripMenuItem";
-            this.logOutToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.logOutToolStripMenuItem.Text = "Log Out";
-            this.logOutToolStripMenuItem.Click += new System.EventHandler(this.logOutToolStripMenuItem_Click);
-            // 
             // exitAltF4ToolStripMenuItem
             // 
             this.exitAltF4ToolStripMenuItem.Name = "exitAltF4ToolStripMenuItem";
-            this.exitAltF4ToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.exitAltF4ToolStripMenuItem.Size = new System.Drawing.Size(128, 22);
             this.exitAltF4ToolStripMenuItem.Text = "Exit Alt-F4";
             this.exitAltF4ToolStripMenuItem.Click += new System.EventHandler(this.exitAltF4ToolStripMenuItem_Click);
             // 
@@ -187,7 +157,6 @@ namespace Consultant_Scheduling_Mushero
             this.customerToolStripMenuItem1.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.addCustomerToolStripMenuItem,
             this.modifyCustomerToolStripMenuItem,
-            this.testCustomerToolStripMenuItem,
             this.deleteCustomerToolStripMenuItem});
             this.customerToolStripMenuItem1.Name = "customerToolStripMenuItem1";
             this.customerToolStripMenuItem1.Size = new System.Drawing.Size(71, 20);
@@ -196,28 +165,21 @@ namespace Consultant_Scheduling_Mushero
             // addCustomerToolStripMenuItem
             // 
             this.addCustomerToolStripMenuItem.Name = "addCustomerToolStripMenuItem";
-            this.addCustomerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.addCustomerToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             this.addCustomerToolStripMenuItem.Text = "Add Customer";
             this.addCustomerToolStripMenuItem.Click += new System.EventHandler(this.addCustomerToolStripMenuItem_Click);
             // 
             // modifyCustomerToolStripMenuItem
             // 
             this.modifyCustomerToolStripMenuItem.Name = "modifyCustomerToolStripMenuItem";
-            this.modifyCustomerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.modifyCustomerToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             this.modifyCustomerToolStripMenuItem.Text = "Modify Customer";
             this.modifyCustomerToolStripMenuItem.Click += new System.EventHandler(this.modifyCustomerToolStripMenuItem_Click);
-            // 
-            // testCustomerToolStripMenuItem
-            // 
-            this.testCustomerToolStripMenuItem.Name = "testCustomerToolStripMenuItem";
-            this.testCustomerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
-            this.testCustomerToolStripMenuItem.Text = "Test Customer";
-            this.testCustomerToolStripMenuItem.Click += new System.EventHandler(this.testCustomerToolStripMenuItem_Click);
             // 
             // deleteCustomerToolStripMenuItem
             // 
             this.deleteCustomerToolStripMenuItem.Name = "deleteCustomerToolStripMenuItem";
-            this.deleteCustomerToolStripMenuItem.Size = new System.Drawing.Size(180, 22);
+            this.deleteCustomerToolStripMenuItem.Size = new System.Drawing.Size(167, 22);
             this.deleteCustomerToolStripMenuItem.Text = "Delete Customer";
             this.deleteCustomerToolStripMenuItem.Click += new System.EventHandler(this.deleteCustomerToolStripMenuItem_Click);
             // 
@@ -226,8 +188,7 @@ namespace Consultant_Scheduling_Mushero
             this.appointmentToolStripMenuItem2.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.addAppointmentToolStripMenuItem,
             this.modifyAppointmentToolStripMenuItem,
-            this.deleteAppointmentToolStripMenuItem,
-            this.genericAppointmentToolStripMenuItem});
+            this.deleteAppointmentToolStripMenuItem});
             this.appointmentToolStripMenuItem2.Name = "appointmentToolStripMenuItem2";
             this.appointmentToolStripMenuItem2.Size = new System.Drawing.Size(90, 20);
             this.appointmentToolStripMenuItem2.Text = "Appointment";
@@ -235,38 +196,29 @@ namespace Consultant_Scheduling_Mushero
             // addAppointmentToolStripMenuItem
             // 
             this.addAppointmentToolStripMenuItem.Name = "addAppointmentToolStripMenuItem";
-            this.addAppointmentToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
+            this.addAppointmentToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
             this.addAppointmentToolStripMenuItem.Text = "Add Appointment";
             this.addAppointmentToolStripMenuItem.Click += new System.EventHandler(this.addAppointmentToolStripMenuItem_Click);
             // 
             // modifyAppointmentToolStripMenuItem
             // 
             this.modifyAppointmentToolStripMenuItem.Name = "modifyAppointmentToolStripMenuItem";
-            this.modifyAppointmentToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
+            this.modifyAppointmentToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
             this.modifyAppointmentToolStripMenuItem.Text = "Modify Appointment";
             this.modifyAppointmentToolStripMenuItem.Click += new System.EventHandler(this.modifyAppointmentToolStripMenuItem_Click);
             // 
             // deleteAppointmentToolStripMenuItem
             // 
             this.deleteAppointmentToolStripMenuItem.Name = "deleteAppointmentToolStripMenuItem";
-            this.deleteAppointmentToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
+            this.deleteAppointmentToolStripMenuItem.Size = new System.Drawing.Size(186, 22);
             this.deleteAppointmentToolStripMenuItem.Text = "Delete Appointment";
             this.deleteAppointmentToolStripMenuItem.Click += new System.EventHandler(this.deleteAppointmentToolStripMenuItem_Click_1);
-            // 
-            // genericAppointmentToolStripMenuItem
-            // 
-            this.genericAppointmentToolStripMenuItem.Name = "genericAppointmentToolStripMenuItem";
-            this.genericAppointmentToolStripMenuItem.Size = new System.Drawing.Size(188, 22);
-            this.genericAppointmentToolStripMenuItem.Text = "Generic Appointment";
-            this.genericAppointmentToolStripMenuItem.Click += new System.EventHandler(this.genericAppointmentToolStripMenuItem_Click);
             // 
             // viewToolStripMenuItem
             // 
             this.viewToolStripMenuItem.DropDownItems.AddRange(new System.Windows.Forms.ToolStripItem[] {
             this.reportsToolStripMenuItem,
-            this.calendarToolStripMenuItem,
-            this.customersToolStripMenuItem,
-            this.appointmentsToolStripMenuItem});
+            this.calendarToolStripMenuItem});
             this.viewToolStripMenuItem.Name = "viewToolStripMenuItem";
             this.viewToolStripMenuItem.Size = new System.Drawing.Size(44, 20);
             this.viewToolStripMenuItem.Text = "View";
@@ -274,30 +226,26 @@ namespace Consultant_Scheduling_Mushero
             // reportsToolStripMenuItem
             // 
             this.reportsToolStripMenuItem.Name = "reportsToolStripMenuItem";
-            this.reportsToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.reportsToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
             this.reportsToolStripMenuItem.Text = "Reports";
             this.reportsToolStripMenuItem.Click += new System.EventHandler(this.reportsToolStripMenuItem_Click);
             // 
             // calendarToolStripMenuItem
             // 
             this.calendarToolStripMenuItem.Name = "calendarToolStripMenuItem";
-            this.calendarToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
+            this.calendarToolStripMenuItem.Size = new System.Drawing.Size(121, 22);
             this.calendarToolStripMenuItem.Text = "Calendar";
             this.calendarToolStripMenuItem.Click += new System.EventHandler(this.calendarToolStripMenuItem_Click);
             // 
-            // customersToolStripMenuItem
+            // refreshBtn
             // 
-            this.customersToolStripMenuItem.Enabled = false;
-            this.customersToolStripMenuItem.Name = "customersToolStripMenuItem";
-            this.customersToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
-            this.customersToolStripMenuItem.Text = "Customers";
-            // 
-            // appointmentsToolStripMenuItem
-            // 
-            this.appointmentsToolStripMenuItem.Enabled = false;
-            this.appointmentsToolStripMenuItem.Name = "appointmentsToolStripMenuItem";
-            this.appointmentsToolStripMenuItem.Size = new System.Drawing.Size(150, 22);
-            this.appointmentsToolStripMenuItem.Text = "Appointments";
+            this.refreshBtn.Location = new System.Drawing.Point(333, 470);
+            this.refreshBtn.Name = "refreshBtn";
+            this.refreshBtn.Size = new System.Drawing.Size(75, 23);
+            this.refreshBtn.TabIndex = 5;
+            this.refreshBtn.Text = "Refresh";
+            this.refreshBtn.UseVisualStyleBackColor = true;
+            this.refreshBtn.Click += new System.EventHandler(this.refreshBtn_Click);
             // 
             // Dashboard
             // 
@@ -305,6 +253,7 @@ namespace Consultant_Scheduling_Mushero
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(777, 505);
+            this.Controls.Add(this.refreshBtn);
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Controls.Add(this.customerTable);
@@ -334,23 +283,17 @@ namespace Consultant_Scheduling_Mushero
         private System.Windows.Forms.MenuStrip menuStrip1;
         private System.Windows.Forms.ToolStripMenuItem toolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem exitAltF4ToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem logOutToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem customerToolStripMenuItem1;
         private System.Windows.Forms.ToolStripMenuItem addCustomerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem modifyCustomerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem appointmentToolStripMenuItem2;
         private System.Windows.Forms.ToolStripMenuItem addAppointmentToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem modifyAppointmentToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem refreshToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem viewToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem calendarToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem customersToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem appointmentsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem testCustomerToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem settingsToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem deleteCustomerToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem deleteAppointmentToolStripMenuItem;
         private System.Windows.Forms.ToolStripMenuItem reportsToolStripMenuItem;
-        private System.Windows.Forms.ToolStripMenuItem genericAppointmentToolStripMenuItem;
+        private System.Windows.Forms.Button refreshBtn;
     }
 }

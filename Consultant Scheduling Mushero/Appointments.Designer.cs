@@ -49,6 +49,7 @@ namespace Consultant_Scheduling_Mushero
             this.locationComboBx = new System.Windows.Forms.ComboBox();
             this.label9 = new System.Windows.Forms.Label();
             this.customerSelection = new System.Windows.Forms.ComboBox();
+            this.customerName = new System.Windows.Forms.Label();
             this.SuspendLayout();
             // 
             // label1
@@ -133,7 +134,7 @@ namespace Consultant_Scheduling_Mushero
             // 
             // startDateTime
             // 
-            this.startDateTime.CustomFormat = "yyyy/mm/dd  hh:mm";
+            this.startDateTime.CustomFormat = "yyyy/MM/dd  hh:mm";
             this.startDateTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.startDateTime.Location = new System.Drawing.Point(124, 352);
             this.startDateTime.Margin = new System.Windows.Forms.Padding(2);
@@ -143,7 +144,7 @@ namespace Consultant_Scheduling_Mushero
             // 
             // endDateTime
             // 
-            this.endDateTime.CustomFormat = "yyyy/mm/dd  hh:mm";
+            this.endDateTime.CustomFormat = "yyyy/MM/dd  hh:mm";
             this.endDateTime.Format = System.Windows.Forms.DateTimePickerFormat.Custom;
             this.endDateTime.Location = new System.Drawing.Point(124, 383);
             this.endDateTime.Margin = new System.Windows.Forms.Padding(2);
@@ -230,7 +231,7 @@ namespace Consultant_Scheduling_Mushero
             // label9
             // 
             this.label9.AutoSize = true;
-            this.label9.Location = new System.Drawing.Point(28, 74);
+            this.label9.Location = new System.Drawing.Point(28, 69);
             this.label9.Name = "label9";
             this.label9.Size = new System.Drawing.Size(51, 13);
             this.label9.TabIndex = 20;
@@ -244,11 +245,20 @@ namespace Consultant_Scheduling_Mushero
             this.customerSelection.Size = new System.Drawing.Size(121, 21);
             this.customerSelection.TabIndex = 2;
             // 
+            // customerName
+            // 
+            this.customerName.AutoSize = true;
+            this.customerName.Location = new System.Drawing.Point(93, 67);
+            this.customerName.Name = "customerName";
+            this.customerName.Size = new System.Drawing.Size(0, 13);
+            this.customerName.TabIndex = 21;
+            // 
             // Appointments
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(303, 453);
+            this.Controls.Add(this.customerName);
             this.Controls.Add(this.customerSelection);
             this.Controls.Add(this.label9);
             this.Controls.Add(this.locationComboBx);
@@ -299,5 +309,6 @@ namespace Consultant_Scheduling_Mushero
         private System.Windows.Forms.ComboBox locationComboBx;
         private System.Windows.Forms.Label label9;
         private System.Windows.Forms.ComboBox customerSelection;
+        private System.Windows.Forms.Label customerName;
     }
 }

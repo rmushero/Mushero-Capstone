@@ -31,7 +31,7 @@ namespace Consultant_Scheduling_Mushero
           
             InitializeComponent();
             
-            customerSelection.DisplayMember = "Key";
+            customerSelection.DisplayMember = "Value";
             customerSelection.ValueMember = "Key";
             populateCustomer(currentUser.Username);
             customerSelection.DataSource = new BindingSource(customers, null);
@@ -40,12 +40,7 @@ namespace Consultant_Scheduling_Mushero
 
         }
 
-        public Appointments(string username, string type)
-        {
-            InitializeComponent();
-            currentUser.Username = username;
-            createGenericApt();
-        }
+        
 
         // Modification Form 
 
@@ -60,17 +55,10 @@ namespace Consultant_Scheduling_Mushero
             newApt.AppointmentId = id;
             currentUser = user;
             populateForm(newApt.AppointmentId);
-           
-            customerSelection.DisplayMember = "Value";
-            customerSelection.ValueMember = "Key";
-
-            
-
-           
-
-           
-
-           
+            Customer customer = new Customer();
+            customer.getCustomerData(newApt.CustomerID);
+            customerSelection.Visible = false;
+            customerName.Text = $"{customer.CustomerName}";  
            
         }
 
@@ -132,10 +120,6 @@ namespace Consultant_Scheduling_Mushero
             //Set the Location combo box
             locationComboBx.SelectedItem = newApt.Location.ToString();
 
-           
-
-            
-
             //Set Contact Box
             contactTxtBox.Text = newApt.Contact.ToString();
 
@@ -146,10 +130,10 @@ namespace Consultant_Scheduling_Mushero
             urlTxtBox.Text = newApt.Url.ToString();
 
             //Set Start Time
-          startDateTime.Value = newApt.Start;
+          startDateTime.Value = newApt.Start.AddHours(getOffSet());
 
             //Set End Time
-           endDateTime.Value = newApt.End;
+           endDateTime.Value = newApt.End.AddHours(getOffSet());
         }
 
 
@@ -170,62 +154,38 @@ namespace Consultant_Scheduling_Mushero
         /// <param name="e"></param>
         private void saveBtn_Click(object sender, EventArgs e)
         {
-            if (validateForm() == true)
+            if(validateForm() == true)
             {
                 if(modificationMode == true)
                 {
                     if (updateAppointment() == true)
                     {
                         string message = "Appointment Updated Created";
+                        this.Close();
                         MessageBox.Show(message);
                     }
 
                 }
                 else
                 {
-                    if (createAppointment() == true)
-                    {
-                        string message = "Appointment Successfully Created";
-                        MessageBox.Show(message);
-                    }
-                }
+                    
+                        if (createAppointment() == true)
+                        {
+                            string message = "Appointment Successfully Created";
+                        this.Close();
+                            MessageBox.Show(message);
 
+                        }
+                    
+                }           
                 
 
-
-                
-                this.Close();
-
             }
-            else
-            {
-                string message = "Please enter all required information";
-                MessageBox.Show(message);
-            }
-
-        }
-
-        private void createGenericApt()
-        {
-            Appointment junkApt = new Appointment();
-
            
-            junkApt.UserID = 1;
-            junkApt.CustomerID = 2;
-            junkApt.Title = "Automatically Generated Test Appointment";
-            junkApt.Description = "Not needed";
-            junkApt.Location = "New York, New York";
-            junkApt.Contact = "test";
-            junkApt.Type = "TEST";
-            junkApt.Url = "test";
-            junkApt.Start = DateTime.Now.AddMinutes(17);
-            junkApt.End = DateTime.Now.AddMinutes(47);
-            junkApt.CreatedBy = "test";
-            junkApt.LastUpdateBy = "test";
 
-
-            junkApt.Create_Appointment("test");
         }
+
+     
         /// <summary>
         /// Method for action when cancel button is clicked
         /// </summary>
@@ -333,7 +293,7 @@ namespace Consultant_Scheduling_Mushero
                 }
             }
 
-            if(count >0)
+            if(count > 0)
             {
                 MessageBox.Show("Please fill out all fields");
                 validated = false;
@@ -344,7 +304,7 @@ namespace Consultant_Scheduling_Mushero
             return validated;
         }
 
-       
+
         /// <summary>
         /// Validate that the dates are not equal to each other and start is less than end time.
         /// </summary>
@@ -352,18 +312,25 @@ namespace Consultant_Scheduling_Mushero
         public bool validateDates()
         {
             bool validated = false;
+
+
             // Ensure no existing appointments are overlapping
 
-            if (startDateTime.Value < DateTime.Now)
+            if (startDateTime.Value <= DateTime.Now)
             {
                 const string message = "You cannot create an appointment in the past. \n Please select a Future Date";
                 MessageBox.Show(message);
             }
             else if (endDateTime.Value < DateTime.Now || DateTime.Parse(endDateTime.Value.ToString()) <= DateTime.Parse(startDateTime.Value.ToString()))
             {
-                const string message = "You cannot create an appointment in the past. \n Please select a Future Date";
+                const string message = "You cannot end an appointment in the past. \n Please select a Future Date";
                 MessageBox.Show(message);
 
+            }
+            else if (startDateTime.Value.Hour < 09 || endDateTime.Value.Hour > 17 )
+            {
+                const string message = "You cannot book an appointment outside of business hours \n 9:00 AM - 5:00 PM local time";
+                MessageBox.Show(message);
             }
             else
             {
@@ -378,8 +345,10 @@ namespace Consultant_Scheduling_Mushero
         {
             bool validated = false;
 
-            DateTime tempStart = startDateTime.Value.AddHours(getOffSet());
-            DateTime tempEnd = startDateTime.Value.AddHours(getOffSet());
+            DateTime tempStart = startDateTime.Value.AddHours(getOnSet());
+            DateTime tempEnd = endDateTime.Value.AddHours(getOnSet());
+
+          
 
             if (newApt.checkAvailability(tempStart, tempEnd) > 0)
             {
@@ -387,6 +356,8 @@ namespace Consultant_Scheduling_Mushero
             }
             else
             {
+                newApt.Start = tempStart;
+                newApt.End = tempEnd;
                 validated = true;
             }
 
@@ -410,6 +381,10 @@ namespace Consultant_Scheduling_Mushero
             return validated;
         }
 
+        /// <summary>
+        /// This method collects data from the form and submits it to the database
+        /// </summary>
+        /// <returns></returns>
 
         public bool createAppointment()
         {
@@ -422,15 +397,9 @@ namespace Consultant_Scheduling_Mushero
             newApt.Contact = contactTxtBox.Text.ToString();
             newApt.Type = typeTxtBox.Text.ToString();
             newApt.Url = urlTxtBox.Text.ToString();
-            newApt.Start = startDateTime.Value;
-            newApt.End = endDateTime.Value;
+            newApt.Start = startDateTime.Value.AddHours(getOnSet());
+            newApt.End = endDateTime.Value.AddHours(getOnSet());
             newApt.CustomerID = Convert.ToInt32(customerSelection.SelectedValue);
-            Console.WriteLine(newApt.CustomerID);
-
-           
-
-
-            Console.WriteLine(newApt.Start.ToString());
             try
             {
                 if(newApt.Create_Appointment(currentUser.Username) == true)
@@ -450,6 +419,11 @@ namespace Consultant_Scheduling_Mushero
         }
 
 
+
+        /// <summary>
+        /// Method used to collect data from appointment form and updates the existing appointment
+        /// </summary>
+        /// <returns></returns>
         public bool updateAppointment()
         {
             bool updated = false;
@@ -461,8 +435,8 @@ namespace Consultant_Scheduling_Mushero
             newApt.Contact = contactTxtBox.Text.ToString();
             newApt.Type = typeTxtBox.Text.ToString();
             newApt.Url = urlTxtBox.Text.ToString();
-            newApt.Start =startDateTime.Value;
-            newApt.End = endDateTime.Value;
+            newApt.Start =startDateTime.Value.AddHours(getOnSet()); 
+            newApt.End = endDateTime.Value.AddHours(getOnSet()); 
             newApt.CustomerID = Convert.ToInt32(customerSelection.SelectedValue);
 
             try
@@ -488,13 +462,29 @@ namespace Consultant_Scheduling_Mushero
         /// </summary>
         public double getOffSet()
         {
-            double offset = 0;
+            int offset = 0;
 
             foreach (KeyValuePair<string, double> selection in dataSource)
             {
                 if (locationComboBx.Text == selection.Key)
                 {
-                    offset = selection.Value;
+                    offset = Convert.ToInt32(selection.Value);
+                }
+            }
+            return offset;
+
+        }
+
+        public double getOnSet()
+        {
+            int offset = 0;
+
+            foreach (KeyValuePair<string, double> selection in dataSource)
+            {
+                if (locationComboBx.Text == selection.Key)
+                {
+                  double  temp = selection.Value;
+                    offset = Convert.ToInt32(temp = selection.Value *-1);
                 }
             }
             return offset;

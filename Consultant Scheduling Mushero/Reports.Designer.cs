@@ -33,6 +33,7 @@ namespace Consultant_Scheduling_Mushero
             this.reportTwoBtn = new System.Windows.Forms.Button();
             this.reportThreeBtn = new System.Windows.Forms.Button();
             this.reportsView = new System.Windows.Forms.DataGridView();
+            this.exitBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.reportsView)).BeginInit();
             this.SuspendLayout();
             // 
@@ -77,11 +78,22 @@ namespace Consultant_Scheduling_Mushero
             this.reportsView.Size = new System.Drawing.Size(791, 345);
             this.reportsView.TabIndex = 3;
             // 
+            // exitBtn
+            // 
+            this.exitBtn.Location = new System.Drawing.Point(482, 43);
+            this.exitBtn.Name = "exitBtn";
+            this.exitBtn.Size = new System.Drawing.Size(75, 23);
+            this.exitBtn.TabIndex = 4;
+            this.exitBtn.Text = "Exit";
+            this.exitBtn.UseVisualStyleBackColor = true;
+            this.exitBtn.Click += new System.EventHandler(this.exitBtn_Click);
+            // 
             // Reports
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.ClientSize = new System.Drawing.Size(800, 450);
+            this.Controls.Add(this.exitBtn);
             this.Controls.Add(this.reportsView);
             this.Controls.Add(this.reportThreeBtn);
             this.Controls.Add(this.reportTwoBtn);
@@ -99,5 +111,6 @@ namespace Consultant_Scheduling_Mushero
         private System.Windows.Forms.Button reportTwoBtn;
         private System.Windows.Forms.Button reportThreeBtn;
         private System.Windows.Forms.DataGridView reportsView;
+        private System.Windows.Forms.Button exitBtn;
     }
 }

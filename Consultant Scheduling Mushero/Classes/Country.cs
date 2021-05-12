@@ -16,7 +16,7 @@ namespace Consultant_Scheduling_Mushero
 
         private string country;
 
-        public List<Country> countries = new List<Country>();
+    
 
         public int CountryId
         {

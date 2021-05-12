@@ -89,10 +89,85 @@ namespace Consultant_Scheduling_Mushero
             return userID;
         }
 
-      
+        public DataTable userApts()
+        {
+            DataTable list = new DataTable();
+            string command = $"Select appointmentId, customerId, title, type, start, end from appointment where userId = {UserID}";
+
+            using (MySqlConnection cnn = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand cmd = new MySqlCommand(command, cnn))
+                {
+                    try
+                    {
+                        cnn.Open();
+
+                        using (MySqlDataReader reader = cmd.ExecuteReader())
+                        {
+                            list.Load(reader);
+                        }
 
 
 
+                    }
+
+                    catch (MySql.Data.MySqlClient.MySqlException ex)
+                    {
+                        Console.WriteLine("Error " + ex.Number + " \nMessage: " + ex.Message);
+                    }
+                    finally
+                    {
+                        cnn.Close();
+                        cnn.Dispose();
+                    }
+                }
+            }
+
+            return list;
+        }
+
+      public DataTable getWeeklyAppointments()
+        {
+            DataTable appts = new DataTable();
+
+            return appts;
+        }
+
+
+        public DataTable getAppointments()
+        {
+            string command = "SELECT * FROM appointment a WHERE userId = " + UserID + " order by start asc";
+
+            DataTable appointments = new DataTable();
+            using (MySqlConnection cnn = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand cmd = new MySqlCommand(command, cnn))
+                {
+
+                    try
+                    {
+                        cnn.Open();
+
+                        appointments.Load(cmd.ExecuteReader());
+
+                    }
+                    catch (MySql.Data.MySqlClient.MySqlException ex)
+                    {
+                        Console.WriteLine("get_Appointment(): ->Error " + ex.Number + " \nMessage: " + ex.Message); ;
+                    }
+                    finally
+                    {
+                        cnn.Close();
+                        cnn.Dispose();
+                    }
+
+                }
+
+
+            }
+
+            return appointments;
+        }
 
 
 

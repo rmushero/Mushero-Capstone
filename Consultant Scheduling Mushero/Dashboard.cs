@@ -17,16 +17,14 @@ namespace Consultant_Scheduling_Mushero
 
         User CurrentUser = new User();
 
-        List<Appointment> appointments = new List<Appointment>();
-        List<Customer> customers = new List<Customer>();
-        List<Address> addresses = new List<Address>();
-        List<City> cities = new List<City>();
-        List<Country> countries = new List<Country>();
-
+        DataTable appointments = new DataTable();
        
-        
+        Dictionary<string, double> dataSource = new Dictionary<string, double>();
 
-      //  public string connectionString = ConfigurationManager.ConnectionStrings["SqlConnection"].ConnectionString;
+
+
+
+
 
         public Dashboard(User _user, string username)
         {
@@ -34,9 +32,17 @@ namespace Consultant_Scheduling_Mushero
             InitializeComponent();
             CurrentUser = _user;
             CurrentUser.Username = username;
-
             custTableRefresh();
             aptTableRefresh();
+            var startTime = TimeSpan.Zero;
+            var periodicTime = TimeSpan.FromMinutes(1);
+
+            var timer = new System.Threading.Timer(e =>
+                {
+                    checkAppointmentSoon(CurrentUser.UserID);
+                   
+            }, null, startTime, periodicTime);
+            
 
         }
 
@@ -48,18 +54,40 @@ namespace Consultant_Scheduling_Mushero
         public void checkAppointmentSoon(int id)
         {
             DateTime rightNow = DateTime.Now;
-            foreach(Appointment apt in appointments)
+            TimeSpan offset;
+            offset = TimeZone.CurrentTimeZone.GetUtcOffset(rightNow);
+            Console.WriteLine("It worked!");
+            foreach(DataRow apt in appointments.Rows)
             {
-                if (Convert.ToDateTime(apt.Start) == rightNow.AddMinutes(15))
+                
+              if (Convert.ToDateTime(apt["start"]).AddHours(Convert.ToDouble(offset)) == rightNow.AddMinutes(15))
                 {
-                    MessageBox.Show("You have an appointment in 15 minutes");
+                    string title = apt["title"].ToString();
+                    string message = $"You have an appointment at {apt["start"]}";
+                    MessageBox.Show(title, message);
+
                 }
             }
 
+
+        }
+
+        protected override void OnFormClosed(FormClosedEventArgs e)
+        {
+          
+            base.OnClosed(e);
+            refreshTables();
         }
 
 
         // Form Interactions
+
+
+        private void Dashboard_FormClosed(object sender, FormClosedEventArgs e)
+        {
+
+            Application.Exit();
+        }
 
         private void exitAltF4ToolStripMenuItem_Click(object sender, EventArgs e)
         {
@@ -69,28 +97,25 @@ namespace Consultant_Scheduling_Mushero
 
         private void addCustomerToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            this.Hide();
+      
             Customers launch = new Customers(CurrentUser.Username);
             launch.Show();
             this.Show();
-            custTableRefresh();
-            aptTableRefresh();
+         
 
         }
 
-        private void Dashboard_FormClosed(object sender, FormClosedEventArgs e)
-        {
-
-            Application.Exit();
-        }
+        
 
         private void addAppointmentToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            Console.WriteLine(CurrentUser.UserID.ToString());
+           
             new Appointments(CurrentUser).Show();
-            custTableRefresh();
-            aptTableRefresh();
-
+            
+            this.Show();
+            
+            
+            
 
         }
 
@@ -119,15 +144,17 @@ namespace Consultant_Scheduling_Mushero
 
                         Customers updateCustomer = new Customers(CurrentUser.Username, id);
                         updateCustomer.Show();
-                        custTableRefresh();
-                        aptTableRefresh();
-                        this.Show();
+                       
+                        
 
 
                     }
                 }
             }
-           
+
+           ;
+            this.Show();
+
         }
 
         private void modifyAppointmentToolStripMenuItem_Click(object sender, EventArgs e)
@@ -153,10 +180,7 @@ namespace Consultant_Scheduling_Mushero
 
                         Appointments modifyAppointment = new Appointments(id, CurrentUser);
                         modifyAppointment.Show();
-                        custTableRefresh();
-                        aptTableRefresh();
                        
-                        this.Show();
 
 
                     }
@@ -166,6 +190,8 @@ namespace Consultant_Scheduling_Mushero
             {
 
             }
+           
+            this.Show();
         }
 
 
@@ -179,54 +205,48 @@ namespace Consultant_Scheduling_Mushero
 
         public void custTableRefresh()
         {
-            DataTable temp = new DataTable();
-            Customer customer = new Customer();
+           DataTable temp = new DataTable();
+           Customer customer = new Customer();
            temp = customer.getCustomersforTable(CurrentUser.Username);
-
-
-           
-
-           customerTable.DataSource = temp;
-            
-
-           
-            customerTable.Update();
-            customerTable.Refresh();
+           customerTable.DataSource = temp;        
+           customerTable.Update();
+           customerTable.Refresh();
         }
         public void aptTableRefresh()
         {
             DataTable temp = new DataTable();
             Appointment appointment = new Appointment();
-            temp = appointment.getAppointments(CurrentUser.UserID); ;
-           
-
+            temp = appointment.getAppointments(CurrentUser.UserID);
             appointmentTable.DataSource = temp;
             appointmentTable.Update();
             appointmentTable.Refresh();
         }
         private void calendarToolStripMenuItem_Click(object sender, EventArgs e)
         {
-
+            CalendarVw newView = new CalendarVw(CurrentUser);
+           
+            newView.Show();
+            refreshTables();
+            this.Show();
+            
+            
         }
 
-        private void logOutToolStripMenuItem_Click(object sender, EventArgs e)
-        {
+      
+      
 
-        }
 
-        private void testCustomerToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Customers testCust = new Customers(CurrentUser.Username, "OK");
-            custTableRefresh();
-            aptTableRefresh();
-        }
-
+        /// <summary>
+        /// NEED TO FINISH REPORTS 
+        /// 
+        /// </summary>
+        /// <param name="sender"></param>
+        /// <param name="e"></param>
         private void reportsToolStripMenuItem_Click(object sender, EventArgs e)
         {
             Reports reportWindow = new Reports();
             reportWindow.Show();
-            custTableRefresh();
-            aptTableRefresh();
+            refreshTables();
             this.Show();
         }
 
@@ -250,20 +270,13 @@ namespace Consultant_Scheduling_Mushero
                 {
                     Appointment appointment = new Appointment();
                     appointment.Delete_Appointment(id);
-                    aptTableRefresh();
-                    custTableRefresh();
+                    refreshTables();
                 }
             }
         }
 
 
-        // This works
-        private void genericAppointmentToolStripMenuItem_Click(object sender, EventArgs e)
-        {
-            Appointments testAppointment = new Appointments(CurrentUser.Username, "OK");
-            custTableRefresh();
-            aptTableRefresh();
-        }
+      
 
 
         // This works now 
@@ -286,19 +299,23 @@ namespace Consultant_Scheduling_Mushero
                 {
                     Customer customer = new Customer();
                     customer.deleteCustomer(id);
-                    custTableRefresh();
-                    aptTableRefresh();
+                   
                 }
             }
+
+            refreshTables();
+
+
         }
-
-
-        // This works
-        private void refreshToolStripMenuItem_Click(object sender, EventArgs e)
+        public void refreshTables()
         {
             aptTableRefresh();
             custTableRefresh();
         }
 
+        private void refreshBtn_Click(object sender, EventArgs e)
+        {
+            refreshTables();
+        }
     }
 }

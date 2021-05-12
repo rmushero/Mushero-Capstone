@@ -15,12 +15,11 @@ namespace Consultant_Scheduling_Mushero
         private int cityId;
 
         private string cityName;
-        Country country;
+        int countryId;
 
 
 
-        public List<City> cities = new List<City>();
-
+        
         
         public int CityId
         {

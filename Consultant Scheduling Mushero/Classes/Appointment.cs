@@ -122,7 +122,7 @@ namespace Consultant_Scheduling_Mushero
                         }
                         catch (MySql.Data.MySqlClient.MySqlException ex)
                         {
-                            Console.WriteLine("Creat Appointment: Error " + ex.Number + " \nMessage: " + ex.Message);
+                            Console.WriteLine("Create Appointment: Error " + ex.Number + " \nMessage: " + ex.Message);
                         }
                         finally
                         {
@@ -303,7 +303,12 @@ namespace Consultant_Scheduling_Mushero
 
         public int checkAvailability(DateTime start, DateTime end)
         {
-            string sql = "SELECT COUNT(appointmentId)FROM appointment WHERE START BETWEEN '" + Start + "' AND '" + End + "';";
+           
+
+            string sql =$"SELECT count(*) from appointment where (start <= '{start.ToString("yyyy-MM -dd H:mm:ss")}' and end >= '{end.ToString("yyyy-MM-dd H:mm:ss")}') or " +
+                $"(start <= '{end.ToString("yyyy-MM-dd H: mm: ss")}' and end >= '{start.ToString("yyyy-MM-dd hh:mm:ss")}') " +
+                $"or (start >= '{start.ToString("yyyy-MM-dd H:mm:ss")}' and end <= '{end.ToString("yyyy-MM-dd hh:mm:ss")}')";
+           
 
             int count = 0;
 
@@ -315,10 +320,8 @@ namespace Consultant_Scheduling_Mushero
 
                     try
                     {
-                        cmd.ExecuteNonQuery();
-
-
-                        count = int.Parse(cmd.ExecuteScalar().ToString());
+                       count = int.Parse(cmd.ExecuteScalar().ToString());
+                        
 
 
                     }
