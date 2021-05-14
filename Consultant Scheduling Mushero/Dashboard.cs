@@ -357,5 +357,10 @@ namespace Consultant_Scheduling_Mushero
         {
             refreshTables();
         }
+
+        private void custRefBtn_Click(object sender, EventArgs e)
+        {
+            refreshTables();
+        }
     }
 }

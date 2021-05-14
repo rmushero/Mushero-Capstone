@@ -121,7 +121,7 @@ namespace Consultant_Scheduling_Mushero
         /// <param name="userName"></param>
         public void updateAddress(string userName)
         {
-            string command = "UPDATE address SET address = '"+Address1+"\', address2 = '"+Address2+"\', postalCode = '"+PostalCode+"\', phone = "+Phone+", lastUpdateBy = '"+userName+"\' WHERE addressId = "+AddressId+"";
+            string command = $"UPDATE address SET address = '{Address1}', address2 = '{Address2}', postalCode = '{PostalCode}', phone = {Phone}, lastUpdateBy = '{userName}' WHERE addressId = {AddressId}";
 
             using (MySqlConnection cnn = new MySqlConnection(connectionString))
             {
