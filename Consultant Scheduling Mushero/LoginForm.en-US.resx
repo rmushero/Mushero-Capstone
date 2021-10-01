@@ -119,21 +119,30 @@
   </resheader>
   <assembly alias="System.Drawing" name="System.Drawing, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b03f5f7f11d50a3a" />
   <data name="unTxtBx.Location" type="System.Drawing.Point, System.Drawing">
-    <value>122, 46</value>
+    <value>96, 46</value>
   </data>
   <data name="usrNmLbl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>165, 23</value>
+    <value>80, 31</value>
   </data>
   <data name="pwLbl.Location" type="System.Drawing.Point, System.Drawing">
-    <value>166, 89</value>
+    <value>82, 68</value>
   </data>
   <data name="logOnBtn.Location" type="System.Drawing.Point, System.Drawing">
-    <value>122, 164</value>
+    <value>96, 126</value>
   </data>
   <data name="cancelBtn.Location" type="System.Drawing.Point, System.Drawing">
-    <value>205, 164</value>
+    <value>179, 126</value>
   </data>
   <data name="pwTxtBx.Location" type="System.Drawing.Point, System.Drawing">
-    <value>122, 108</value>
+    <value>96, 83</value>
+  </data>
+  <data name="pwTxtBx.Size" type="System.Drawing.Size, System.Drawing">
+    <value>139, 20</value>
+  </data>
+  <data name="$this.ClientSize" type="System.Drawing.Size, System.Drawing">
+    <value>333, 211</value>
+  </data>
+  <data name="$this.Text" xml:space="preserve">
+    <value>Tiny Tents LLC</value>
   </data>
 </root>

@@ -52,6 +52,10 @@ namespace Consultant_Scheduling_Mushero
             this.calendarToolStripMenuItem = new System.Windows.Forms.ToolStripMenuItem();
             this.refreshBtn = new System.Windows.Forms.Button();
             this.custRefBtn = new System.Windows.Forms.Button();
+            this.customerSrchBox = new System.Windows.Forms.TextBox();
+            this.aptSrchBox = new System.Windows.Forms.TextBox();
+            this.custSrchBtn = new System.Windows.Forms.Button();
+            this.aptSrcBtn = new System.Windows.Forms.Button();
             ((System.ComponentModel.ISupportInitialize)(this.customerTable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.appointmentTable)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -71,7 +75,7 @@ namespace Consultant_Scheduling_Mushero
             this.customerTable.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.AllCells;
             this.customerTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
             this.customerTable.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.customerTable.Location = new System.Drawing.Point(17, 39);
+            this.customerTable.Location = new System.Drawing.Point(17, 73);
             this.customerTable.Margin = new System.Windows.Forms.Padding(2);
             this.customerTable.MultiSelect = false;
             this.customerTable.Name = "customerTable";
@@ -91,7 +95,7 @@ namespace Consultant_Scheduling_Mushero
             this.appointmentTable.BorderStyle = System.Windows.Forms.BorderStyle.Fixed3D;
             this.appointmentTable.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.DisableResizing;
             this.appointmentTable.EditMode = System.Windows.Forms.DataGridViewEditMode.EditProgrammatically;
-            this.appointmentTable.Location = new System.Drawing.Point(14, 286);
+            this.appointmentTable.Location = new System.Drawing.Point(15, 287);
             this.appointmentTable.Margin = new System.Windows.Forms.Padding(2);
             this.appointmentTable.MultiSelect = false;
             this.appointmentTable.Name = "appointmentTable";
@@ -106,7 +110,7 @@ namespace Consultant_Scheduling_Mushero
             // label1
             // 
             this.label1.AutoSize = true;
-            this.label1.Location = new System.Drawing.Point(11, 24);
+            this.label1.Location = new System.Drawing.Point(19, 42);
             this.label1.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label1.Name = "label1";
             this.label1.Size = new System.Drawing.Size(56, 13);
@@ -116,7 +120,7 @@ namespace Consultant_Scheduling_Mushero
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(11, 258);
+            this.label2.Location = new System.Drawing.Point(11, 259);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(71, 13);
@@ -240,7 +244,7 @@ namespace Consultant_Scheduling_Mushero
             // 
             // refreshBtn
             // 
-            this.refreshBtn.Location = new System.Drawing.Point(333, 522);
+            this.refreshBtn.Location = new System.Drawing.Point(296, 254);
             this.refreshBtn.Name = "refreshBtn";
             this.refreshBtn.Size = new System.Drawing.Size(75, 23);
             this.refreshBtn.TabIndex = 5;
@@ -250,7 +254,7 @@ namespace Consultant_Scheduling_Mushero
             // 
             // custRefBtn
             // 
-            this.custRefBtn.Location = new System.Drawing.Point(333, 231);
+            this.custRefBtn.Location = new System.Drawing.Point(307, 37);
             this.custRefBtn.Name = "custRefBtn";
             this.custRefBtn.Size = new System.Drawing.Size(75, 23);
             this.custRefBtn.TabIndex = 6;
@@ -258,12 +262,48 @@ namespace Consultant_Scheduling_Mushero
             this.custRefBtn.UseVisualStyleBackColor = true;
             this.custRefBtn.Click += new System.EventHandler(this.custRefBtn_Click);
             // 
+            // customerSrchBox
+            // 
+            this.customerSrchBox.Location = new System.Drawing.Point(94, 38);
+            this.customerSrchBox.Name = "customerSrchBox";
+            this.customerSrchBox.Size = new System.Drawing.Size(100, 20);
+            this.customerSrchBox.TabIndex = 7;
+            // 
+            // aptSrchBox
+            // 
+            this.aptSrchBox.Location = new System.Drawing.Point(95, 255);
+            this.aptSrchBox.Name = "aptSrchBox";
+            this.aptSrchBox.Size = new System.Drawing.Size(100, 20);
+            this.aptSrchBox.TabIndex = 8;
+            // 
+            // custSrchBtn
+            // 
+            this.custSrchBtn.Location = new System.Drawing.Point(213, 37);
+            this.custSrchBtn.Name = "custSrchBtn";
+            this.custSrchBtn.Size = new System.Drawing.Size(75, 23);
+            this.custSrchBtn.TabIndex = 9;
+            this.custSrchBtn.Text = "Search";
+            this.custSrchBtn.UseVisualStyleBackColor = true;
+            // 
+            // aptSrcBtn
+            // 
+            this.aptSrcBtn.Location = new System.Drawing.Point(208, 254);
+            this.aptSrcBtn.Name = "aptSrcBtn";
+            this.aptSrcBtn.Size = new System.Drawing.Size(75, 23);
+            this.aptSrcBtn.TabIndex = 10;
+            this.aptSrcBtn.Text = "Search";
+            this.aptSrcBtn.UseVisualStyleBackColor = true;
+            // 
             // Dashboard
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
-            this.ClientSize = new System.Drawing.Size(777, 572);
+            this.ClientSize = new System.Drawing.Size(777, 521);
+            this.Controls.Add(this.aptSrcBtn);
+            this.Controls.Add(this.custSrchBtn);
+            this.Controls.Add(this.aptSrchBox);
+            this.Controls.Add(this.customerSrchBox);
             this.Controls.Add(this.custRefBtn);
             this.Controls.Add(this.refreshBtn);
             this.Controls.Add(this.label2);
@@ -308,5 +348,9 @@ namespace Consultant_Scheduling_Mushero
         private System.Windows.Forms.ToolStripMenuItem reportsToolStripMenuItem;
         private System.Windows.Forms.Button refreshBtn;
         private System.Windows.Forms.Button custRefBtn;
+        private System.Windows.Forms.TextBox customerSrchBox;
+        private System.Windows.Forms.TextBox aptSrchBox;
+        private System.Windows.Forms.Button custSrchBtn;
+        private System.Windows.Forms.Button aptSrcBtn;
     }
 }

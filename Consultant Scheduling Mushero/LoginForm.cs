@@ -141,8 +141,35 @@ namespace Consultant_Scheduling_Mushero
             pwTxtBx.UseSystemPasswordChar = true;
         }
 
-        
+        private void button1_Click(object sender, EventArgs e)
+        {
+            bool result = false;
+            MySqlConnection connection = new MySqlConnection(connectionString);
+            try
+            {
+                connection.Open();
+                result = true;
+                connection.Close();
+            }
+            catch
 
+            {
+
+                result = false;
+
+            }
+
+            if(result == true)
+            {
+                MessageBox.Show("Connected");
+            }
+            else
+
+            {
+                MessageBox.Show("Failed");
+            }
+                
+        }
     }
 }
 

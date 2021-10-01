@@ -65,7 +65,7 @@ namespace Consultant_Scheduling_Mushero
             // label2
             // 
             this.label2.AutoSize = true;
-            this.label2.Location = new System.Drawing.Point(28, 130);
+            this.label2.Location = new System.Drawing.Point(28, 114);
             this.label2.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label2.Name = "label2";
             this.label2.Size = new System.Drawing.Size(60, 13);
@@ -75,7 +75,7 @@ namespace Consultant_Scheduling_Mushero
             // label3
             // 
             this.label3.AutoSize = true;
-            this.label3.Location = new System.Drawing.Point(28, 229);
+            this.label3.Location = new System.Drawing.Point(28, 223);
             this.label3.Margin = new System.Windows.Forms.Padding(2, 0, 2, 0);
             this.label3.Name = "label3";
             this.label3.Size = new System.Drawing.Size(48, 13);
@@ -163,7 +163,7 @@ namespace Consultant_Scheduling_Mushero
             // descriptionTxtBox
             // 
             this.descriptionTxtBox.BorderStyle = System.Windows.Forms.BorderStyle.FixedSingle;
-            this.descriptionTxtBox.Location = new System.Drawing.Point(27, 147);
+            this.descriptionTxtBox.Location = new System.Drawing.Point(27, 131);
             this.descriptionTxtBox.Margin = new System.Windows.Forms.Padding(2);
             this.descriptionTxtBox.Multiline = true;
             this.descriptionTxtBox.Name = "descriptionTxtBox";
@@ -228,7 +228,7 @@ namespace Consultant_Scheduling_Mushero
             // customerSelection
             // 
             this.customerSelection.FormattingEnabled = true;
-            this.customerSelection.Location = new System.Drawing.Point(31, 100);
+            this.customerSelection.Location = new System.Drawing.Point(31, 85);
             this.customerSelection.Name = "customerSelection";
             this.customerSelection.Size = new System.Drawing.Size(121, 21);
             this.customerSelection.TabIndex = 2;
@@ -243,7 +243,7 @@ namespace Consultant_Scheduling_Mushero
             // 
             // locationtxtBox
             // 
-            this.locationtxtBox.Location = new System.Drawing.Point(28, 245);
+            this.locationtxtBox.Location = new System.Drawing.Point(28, 239);
             this.locationtxtBox.Name = "locationtxtBox";
             this.locationtxtBox.Size = new System.Drawing.Size(253, 20);
             this.locationtxtBox.TabIndex = 22;
