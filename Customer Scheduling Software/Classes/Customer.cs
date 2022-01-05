@@ -1,14 +1,7 @@
-﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-using System.Windows.Forms;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Configuration;
-using MySql.Data.MySqlClient;
+using System.Data;
 
 namespace Consultant_Scheduling_Mushero
 {
@@ -19,11 +12,7 @@ namespace Consultant_Scheduling_Mushero
         private int addressId;
         private sbyte active;
 
-        
-        
-
-
-        public int CustomerId
+        public int CustomerID
         {
             get; set;
         }
@@ -32,7 +21,7 @@ namespace Consultant_Scheduling_Mushero
             get { return customerName; }
             set { customerName = value; }
         }
-        public int AddressId
+        public int AddressID
         {
             get;
             set;
@@ -53,11 +42,11 @@ namespace Consultant_Scheduling_Mushero
 
         public Customer(int customerId)
         {
-            CustomerId = customerId;
+            CustomerID = customerId;
 
         }
 
-        public Customer(string customerName, int addressID, int active, string lastUpdateBy)
+        public Customer(string customerName, int addressID, int active, string lastUpdatedBy)
         {
 
         }
@@ -66,19 +55,19 @@ namespace Consultant_Scheduling_Mushero
 
 
 
-       
+
 
         /// <summary>
         /// this method inserts customer data in to the database
         /// </summary>
         /// <param name="username"></param>
         /// <returns></returns>
-        public int insertCustomer(string username)
+        public int insertCustomer(int userID)
         {
-            string command = $"INSERT INTO customer (customerName, addressId, " +
-                $"active, createDate, createdBy, lastUpdateBy) " +
-                $"Values('{customerName}', {AddressId}, {Active}, " +
-                $"'{DateTime.Now.ToString("yyyy-MM-dd H:mm:ss")}', '{username}', '{username}')";
+            string command = $"INSERT INTO customer (CustomerName, AddressID, " +
+                $"Active, CreateDate, CreatedBy, LastUpdatedBy) " +
+                $"Values('{customerName}', {AddressID}, {Active}, " +
+                $"'{DateTime.Now.ToString("yyyy-MM-dd H:mm:ss")}', '{userID}', '{userID}')";
             try
             {
                 using (MySqlConnection cnn = new MySqlConnection(connectionString))
@@ -91,7 +80,8 @@ namespace Consultant_Scheduling_Mushero
                         {
                             cnn.Open();
                             cmd.ExecuteNonQuery();
-                            CustomerId = Convert.ToInt32(cmd.LastInsertedId);
+                            CustomerID = Convert.ToInt32(cmd.LastInsertedId);
+                            Console.WriteLine($"Insertion Successful Customer Id: {CustomerID}");
                         }
                         catch (MySql.Data.MySqlClient.MySqlException ex)
                         {
@@ -109,7 +99,7 @@ namespace Consultant_Scheduling_Mushero
             {
                 Console.WriteLine(ex.ToString());
             }
-            return CustomerId;
+            return CustomerID;
         }
 
 
@@ -120,8 +110,8 @@ namespace Consultant_Scheduling_Mushero
         /// <returns></returns>
         public int getCustomerData(int customerId)
         {
-            CustomerId = customerId;
-            string command = $"SELECT customerName, addressID, active FROM customer where customerId = {customerId}";
+            CustomerID = customerId;
+            string command = $"SELECT CustomerName, AddressID, Active FROM customer where CustomerId = {customerId}";
 
             using (MySqlConnection cnn = new MySqlConnection(connectionString))
             {
@@ -138,10 +128,10 @@ namespace Consultant_Scheduling_Mushero
                                 while (dr.Read())
                                 {
 
-                                    CustomerName = dr["customerName"].ToString();
-                                    AddressId = Convert.ToInt32(dr["addressId"]);
-                                    Active = Convert.ToSByte(dr["active"]);
-                                    
+                                    CustomerName = dr["CustomerName"].ToString();
+                                    AddressID = Convert.ToInt32(dr["AddressID"]);
+                                    Active = Convert.ToSByte(dr["Active"]);
+
                                 }
 
                             }
@@ -158,7 +148,7 @@ namespace Consultant_Scheduling_Mushero
                 }
             }
 
-            return AddressId;
+            return AddressID;
         }
 
 
@@ -167,7 +157,7 @@ namespace Consultant_Scheduling_Mushero
         /// </summary>
         /// <param name="username"></param>
         /// <returns></returns>
-        public DataTable getCustomersforTable(string username)
+        public DataTable getCustomersforTable(int userID)
         {
 
 
@@ -175,12 +165,12 @@ namespace Consultant_Scheduling_Mushero
             DataTable customers = new DataTable();
 
 
-            string command = $"SELECT c.customerID as ID, c.customerName as Name , c.active as 'Active', a.address as 'Address'," +
-               $" a.address2 as 'Address 2', a.postalCode as 'Postal Code', a.phone as 'Phone', ci.city as 'City', co.country as 'Country'" +
-               $"FROM customer c right join address a on c.addressId = a.addressId " +
-               $"right join city ci on a.cityId = ci.cityId " +
-               $"right join country co on co.countryId = ci.countryId " +
-               $"where c.createdBy = '{username}'";
+            string command = $"SELECT c.CustomerID as CustomerID, c.CustomerName as Name , c.Active as 'Active', a.Address as 'Address'," +
+               $" a.Address2 as 'Address 2', a.PostalCode as 'Postal Code', a.Phone as 'Phone', ci.CityName as 'City', co.CountryName as 'Country'" +
+               $"FROM customer c right join address a on c.AddressID = a.AddressID " +
+               $"right join city ci on a.CityId = ci.CityId " +
+               $"right join country co on co.CountryId = ci.CountryId " +
+               $"where c.CreatedBy = '{userID}'";
 
 
 
@@ -220,10 +210,10 @@ namespace Consultant_Scheduling_Mushero
         /// This method updates the customer in the database
         /// </summary>
         /// <param name="Username"></param>
-        public void updateCustomer(string Username)
+        public void updateCustomer(int userID)
         {
-            string command = $"UPDATE customer SET customerName = '{CustomerName}', active ={Active}," +
-                $" lastUpdateBy = '{Username}' WHERE customerId = {CustomerId }";
+            string command = $"UPDATE customer SET CustomerName = '{CustomerName}', Active ={Active}," +
+                $" LastUpdatedBy = '{userID}' WHERE CustomerID = {CustomerID }";
 
             try
             {
@@ -267,7 +257,7 @@ namespace Consultant_Scheduling_Mushero
 
             // Delete all appointments first 
             bool deleted = false;
-            string command2 = "DELETE from appointment where customerId =" + CustomerID + "";
+            string command2 = $"DELETE from appointment where CustomerID ={CustomerID}";
 
             using (MySqlConnection cnn = new MySqlConnection(connectionString))
             {
@@ -281,15 +271,12 @@ namespace Consultant_Scheduling_Mushero
                         {
                             deleted = true;
                         }
-                        else
-                        {
-                            Console.WriteLine("Delete customer failed");
-                        }
+
 
                     }
                     catch (MySql.Data.MySqlClient.MySqlException ex)
                     {
-                        Console.WriteLine("Update Customer: Error " + ex.Number + " \nMessage: " + ex.Message);
+                        Console.WriteLine("Delete Customer: Error " + ex.Number + " \nMessage: " + ex.Message);
                     }
                     finally
                     {
@@ -301,12 +288,7 @@ namespace Consultant_Scheduling_Mushero
 
 
             // delete from weakest table to strongest table
-            string command = "DELETE c, ad, ct, ctry " +
-            "from customer c " +
-            "inner join address ad on c.addressId = ad.addressID " +
-            "inner join city ct on ad.cityId = ct.cityId " +
-            "inner join country ctry on ct.countryId = ctry.countryId " +
-            "where c.customerId = " + CustomerID + "";
+            string command = $"DELETE c, ad from customer c inner join address ad on c.AddressID = ad.AddressID where c.CustomerID = {CustomerID}";
 
             using (MySqlConnection cnn = new MySqlConnection(connectionString))
             {
@@ -317,8 +299,8 @@ namespace Consultant_Scheduling_Mushero
                     try
                     {
                         cmd.ExecuteNonQuery();
-                       
-                       
+
+
                     }
                     catch (MySql.Data.MySqlClient.MySqlException ex)
                     {
@@ -336,12 +318,52 @@ namespace Consultant_Scheduling_Mushero
             return deleted;
 
         }
+
+        public DataTable searchCustomers(string name)
+        {
+            DataTable customers = new DataTable();
+
+
+            string command = $"SELECT CustomerID, CustomerName, Active FROM customer WHERE CustomerName LIKE '{name}' ";
+
+
+
+            using (MySqlConnection cnn = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand cmd = new MySqlCommand(command, cnn))
+                {
+
+                    try
+                    {
+
+                        cnn.Open();
+
+                        customers.Load(cmd.ExecuteReader());
+
+                    }
+                    catch (MySql.Data.MySqlClient.MySqlException ex)
+                    {
+                        Console.WriteLine($"Search Users Error: {ex.Message.ToString()}");
+                    }
+                    finally
+                    {
+                        cnn.Close();
+                        cnn.Dispose();
+
+
+                    }
+
+
+
+                }
+            }
+            return customers;
+        }
     }
 }
-       
-
-       
 
 
 
-    
+
+
+

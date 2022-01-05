@@ -53,9 +53,9 @@ namespace Consultant_Scheduling_Mushero
             this.refreshBtn = new System.Windows.Forms.Button();
             this.custRefBtn = new System.Windows.Forms.Button();
             this.customerSrchBox = new System.Windows.Forms.TextBox();
-            this.aptSrchBox = new System.Windows.Forms.TextBox();
             this.custSrchBtn = new System.Windows.Forms.Button();
             this.aptSrcBtn = new System.Windows.Forms.Button();
+            this.aptPicker = new System.Windows.Forms.DateTimePicker();
             ((System.ComponentModel.ISupportInitialize)(this.customerTable)).BeginInit();
             ((System.ComponentModel.ISupportInitialize)(this.appointmentTable)).BeginInit();
             this.menuStrip1.SuspendLayout();
@@ -244,7 +244,7 @@ namespace Consultant_Scheduling_Mushero
             // 
             // refreshBtn
             // 
-            this.refreshBtn.Location = new System.Drawing.Point(296, 254);
+            this.refreshBtn.Location = new System.Drawing.Point(381, 256);
             this.refreshBtn.Name = "refreshBtn";
             this.refreshBtn.Size = new System.Drawing.Size(75, 23);
             this.refreshBtn.TabIndex = 5;
@@ -269,13 +269,6 @@ namespace Consultant_Scheduling_Mushero
             this.customerSrchBox.Size = new System.Drawing.Size(100, 20);
             this.customerSrchBox.TabIndex = 7;
             // 
-            // aptSrchBox
-            // 
-            this.aptSrchBox.Location = new System.Drawing.Point(95, 255);
-            this.aptSrchBox.Name = "aptSrchBox";
-            this.aptSrchBox.Size = new System.Drawing.Size(100, 20);
-            this.aptSrchBox.TabIndex = 8;
-            // 
             // custSrchBtn
             // 
             this.custSrchBtn.Location = new System.Drawing.Point(213, 37);
@@ -284,15 +277,26 @@ namespace Consultant_Scheduling_Mushero
             this.custSrchBtn.TabIndex = 9;
             this.custSrchBtn.Text = "Search";
             this.custSrchBtn.UseVisualStyleBackColor = true;
+            this.custSrchBtn.Click += new System.EventHandler(this.custSrchBtn_Click);
             // 
             // aptSrcBtn
             // 
-            this.aptSrcBtn.Location = new System.Drawing.Point(208, 254);
+            this.aptSrcBtn.Location = new System.Drawing.Point(293, 256);
             this.aptSrcBtn.Name = "aptSrcBtn";
             this.aptSrcBtn.Size = new System.Drawing.Size(75, 23);
             this.aptSrcBtn.TabIndex = 10;
             this.aptSrcBtn.Text = "Search";
             this.aptSrcBtn.UseVisualStyleBackColor = true;
+            this.aptSrcBtn.Click += new System.EventHandler(this.aptSrcBtn_Click);
+            // 
+            // aptPicker
+            // 
+            this.aptPicker.Format = System.Windows.Forms.DateTimePickerFormat.Short;
+            this.aptPicker.ImeMode = System.Windows.Forms.ImeMode.NoControl;
+            this.aptPicker.Location = new System.Drawing.Point(87, 259);
+            this.aptPicker.Name = "aptPicker";
+            this.aptPicker.Size = new System.Drawing.Size(200, 20);
+            this.aptPicker.TabIndex = 11;
             // 
             // Dashboard
             // 
@@ -300,9 +304,9 @@ namespace Consultant_Scheduling_Mushero
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
             this.BackColor = System.Drawing.Color.White;
             this.ClientSize = new System.Drawing.Size(777, 521);
+            this.Controls.Add(this.aptPicker);
             this.Controls.Add(this.aptSrcBtn);
             this.Controls.Add(this.custSrchBtn);
-            this.Controls.Add(this.aptSrchBox);
             this.Controls.Add(this.customerSrchBox);
             this.Controls.Add(this.custRefBtn);
             this.Controls.Add(this.refreshBtn);
@@ -349,8 +353,8 @@ namespace Consultant_Scheduling_Mushero
         private System.Windows.Forms.Button refreshBtn;
         private System.Windows.Forms.Button custRefBtn;
         private System.Windows.Forms.TextBox customerSrchBox;
-        private System.Windows.Forms.TextBox aptSrchBox;
         private System.Windows.Forms.Button custSrchBtn;
         private System.Windows.Forms.Button aptSrcBtn;
+        private System.Windows.Forms.DateTimePicker aptPicker;
     }
 }

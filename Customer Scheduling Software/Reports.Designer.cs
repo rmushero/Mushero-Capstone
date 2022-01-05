@@ -53,7 +53,7 @@ namespace Consultant_Scheduling_Mushero
             this.reportTwoBtn.Name = "reportTwoBtn";
             this.reportTwoBtn.Size = new System.Drawing.Size(130, 45);
             this.reportTwoBtn.TabIndex = 1;
-            this.reportTwoBtn.Text = "Schedule for Each Consultant";
+            this.reportTwoBtn.Text = "Schedule for Each User";
             this.reportTwoBtn.UseVisualStyleBackColor = true;
             this.reportTwoBtn.Click += new System.EventHandler(this.reportTwoBtn_Click);
             // 

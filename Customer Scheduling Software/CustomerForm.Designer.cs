@@ -1,7 +1,7 @@
 ﻿
 namespace Consultant_Scheduling_Mushero
 {
-    partial class Customers
+    partial class CustomerForm
     {
         /// <summary>
         /// Required designer variable.
@@ -58,7 +58,6 @@ namespace Consultant_Scheduling_Mushero
             this.label2.Size = new System.Drawing.Size(38, 13);
             this.label2.TabIndex = 17;
             this.label2.Text = "Phone";
-
             // 
             // label7
             // 
@@ -215,7 +214,7 @@ namespace Consultant_Scheduling_Mushero
             this.label1.TabIndex = 16;
             this.label1.Text = "Name";
             // 
-            // Customers
+            // CustomerForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -228,8 +227,8 @@ namespace Consultant_Scheduling_Mushero
             this.Controls.Add(this.phoneTextBox);
             this.Controls.Add(this.groupBox1);
             this.Controls.Add(this.label1);
-            this.Name = "Customers";
-            this.Text = "addCustomer";
+            this.Name = "CustomerForm";
+            this.Text = "Customer";
             this.groupBox1.ResumeLayout(false);
             this.groupBox1.PerformLayout();
             this.ResumeLayout(false);

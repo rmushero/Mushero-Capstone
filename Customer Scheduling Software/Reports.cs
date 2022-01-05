@@ -1,11 +1,8 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Data;
-using System.Drawing;
-using System.Linq;
-using System.Windows.Forms;
-using MySql.Data.MySqlClient;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Configuration;
+using System.Data;
+using System.Windows.Forms;
 
 namespace Consultant_Scheduling_Mushero
 {
@@ -26,10 +23,10 @@ namespace Consultant_Scheduling_Mushero
         /// <param name="e"></param>
         private void reportOneBtn_Click(object sender, EventArgs e)
         {
-            string command = "SELECT MONTHNAME(start) AS MONTH,COUNT(appointmentId) AS 'Appointments' from appointment group by MONTH";
+            string command = "SELECT MONTHNAME(start) AS MONTH,COUNT(appointmentId) AS 'Appointments' from Appointment group by MONTH";
             runReport(command);
 
-          
+
         }
 
         /// <summary>
@@ -73,7 +70,7 @@ namespace Consultant_Scheduling_Mushero
         /// <param name="e"></param>
         private void reportTwoBtn_Click(object sender, EventArgs e)
         {
-            string command = "select userName, count(appointmentId) as 'Count' from appointment right join user on appointment.userId = user.userId where appointment.userId > 0 group by userName";
+            string command = "select UserName, count(AppointmentID) as 'Count' from Appointment right join User on Appointment.UserID = User.UserID where Appointment.UserID > 0 group by UserName";
             runReport(command);
         }
 
@@ -84,12 +81,12 @@ namespace Consultant_Scheduling_Mushero
         /// <param name="e"></param>
         private void reportThreeBtn_Click(object sender, EventArgs e)
         {
-            string command = "select  createdBy as 'Created By', count(customerId) as 'Total Customers'from customer where createdBy is not null " +
-              "group by createdBy";
+            string command = "select  CreatedBy as 'Created By', count(CustomerID) as 'Total Customers'from Customer where CreatedBy is not null " +
+              "group by CreatedBy";
 
             runReport(command);
 
-            
+
         }
 
         /// <summary>

@@ -1,10 +1,6 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using MySql.Data.MySqlClient;
-using System.Configuration;
-using System.Threading.Tasks;
 using System.Data;
 
 namespace Consultant_Scheduling_Mushero
@@ -21,7 +17,7 @@ namespace Consultant_Scheduling_Mushero
 
         public List<Address> addresses = new List<Address>();
 
-      
+
 
 
 
@@ -29,7 +25,7 @@ namespace Consultant_Scheduling_Mushero
         {
             get; set;
         }
-        public string Address1
+        public string _Address
         {
             get { return address; }
             set { address = value; }
@@ -40,15 +36,15 @@ namespace Consultant_Scheduling_Mushero
             set { address2 = value; }
         }
 
-        public int CityId
+        public int CityID
         {
-            get;set;
+            get; set;
         }
 
         public string PostalCode
         {
             get { return postalCode; }
-            set { postalCode = value;}
+            set { postalCode = value; }
         }
 
         public string Phone
@@ -58,9 +54,6 @@ namespace Consultant_Scheduling_Mushero
         }
 
         public Address() { }
-
-
-
         public Address(int addressID)
         {
             AddressId = addressID;
@@ -68,49 +61,48 @@ namespace Consultant_Scheduling_Mushero
             getAddressData(addressID);
         }
 
-
-
         /// <summary>
         /// this method inserts the address into the database
         /// </summary>
         /// <param name="userName"></param>
         /// <returns></returns>
 
-        public int insertAddress(string userName)
+        public int insertAddress(int userID)
         {
 
-            
-            string command = $"INSERT INTO address (address, address2, cityID, " +
-                $"postalCode, phone, createDate, createdBy, lastUpdateBy)" +
-                $" VALUES('{Address1}', '{Address2}', {CityId}, " +
-                $"'{PostalCode}', '{Phone}', '{DateTime.Now.ToString("yyyy-MM-dd H:mm:ss")}','{userName}','{userName}')";
 
-            
-                using (MySqlConnection cnn = new MySqlConnection(connectionString))
+            string command = $"INSERT INTO Address (Address, Address2, CityID, " +
+                $"PostalCode, Phone, CreateDate, CreatedBy, LastUpdatedBy)" +
+                $" VALUES('{_Address}', '{Address2}', {CityID}, " +
+                $"'{PostalCode}', '{Phone}', '{DateTime.Now.ToString("yyyy-MM-dd H:mm:ss")}','{userID}','{userID}')";
+
+
+            using (MySqlConnection cnn = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand cmd = new MySqlCommand(command, cnn))
                 {
-                    using (MySqlCommand cmd = new MySqlCommand(command, cnn))
-                    {
-                        
-                        try
-                        {
-                            cnn.Open();
-                            cmd.ExecuteNonQuery();
-                            AddressId = Convert.ToInt32(cmd.LastInsertedId);
 
-                        }
-                        catch (MySql.Data.MySqlClient.MySqlException ex)
-                        {
-                            Console.WriteLine("Insert Address: Error " + ex.Number + " \nMessage: " + ex.Message);
-                        }
-                        finally
-                        {
-                            cnn.Close();
-                            cnn.Dispose();
-                        }
-                        
+                    try
+                    {
+                        cnn.Open();
+                        cmd.ExecuteNonQuery();
+                        AddressId = Convert.ToInt32(cmd.LastInsertedId);
+                        Console.WriteLine($"Insertion Successful Address Id: {AddressId}");
+
                     }
+                    catch (MySql.Data.MySqlClient.MySqlException ex)
+                    {
+                        Console.WriteLine("Insert Address: Error " + ex.Number + " \nMessage: " + ex.Message);
+                    }
+                    finally
+                    {
+                        cnn.Close();
+                        cnn.Dispose();
+                    }
+
                 }
-           
+            }
+
 
             return AddressId;
         }
@@ -119,9 +111,9 @@ namespace Consultant_Scheduling_Mushero
         /// this method updates the current address
         /// </summary>
         /// <param name="userName"></param>
-        public void updateAddress(string userName)
+        public void updateAddress(int userID)
         {
-            string command = $"UPDATE address SET address = '{Address1}', address2 = '{Address2}', postalCode = '{PostalCode}', phone = {Phone}, lastUpdateBy = '{userName}' WHERE addressId = {AddressId}";
+            string command = $"UPDATE Address SET Address = '{_Address}', Address2 = '{Address2}', PostalCode = '{PostalCode}', Phone = {Phone}, LastUpdatedBy = '{userID}' WHERE AddressId = {AddressId}";
 
             using (MySqlConnection cnn = new MySqlConnection(connectionString))
             {
@@ -133,7 +125,7 @@ namespace Consultant_Scheduling_Mushero
                     {
 
                         cmd.ExecuteNonQuery();
-                        
+
 
 
                     }
@@ -153,7 +145,7 @@ namespace Consultant_Scheduling_Mushero
 
 
                 }
-            }            
+            }
         }
 
         /// <summary>
@@ -166,17 +158,17 @@ namespace Consultant_Scheduling_Mushero
         {
             AddressId = addressId;
 
-            string command = $"SELECT address, address2, postalCode, phone, cityId FROM address where addressId = '{addressId}'";
+            string command = $"SELECT Address, Address2, PostalCode, Phone, CityID FROM Address where AddressID = '{addressId}'";
 
-            
-            
+
+
 
             using (MySqlConnection cnn = new MySqlConnection(connectionString))
             {
                 using (MySqlCommand cmd = new MySqlCommand(command, cnn))
                 {
                     cnn.Open();
-                    
+
 
 
                     try
@@ -187,14 +179,14 @@ namespace Consultant_Scheduling_Mushero
                             {
                                 while (dr.Read())
                                 {
-                                   
-                                   
-                                   Address1 = dr["address"].ToString();
-                                   Address2 = dr["address2"].ToString();
-                                   CityId = Convert.ToInt32(dr["cityId"]);
-                                   PostalCode = dr["postalCode"].ToString();
-                                   Phone = dr["phone"].ToString();
-                                   
+
+
+                                    _Address = dr["Address"].ToString();
+                                    Address2 = dr["Address2"].ToString();
+                                    CityID = Convert.ToInt32(dr["CityId"]);
+                                    PostalCode = dr["PostalCode"].ToString();
+                                    Phone = dr["Phone"].ToString();
+
                                 }
                             }
                         }
@@ -203,11 +195,11 @@ namespace Consultant_Scheduling_Mushero
                     {
                         Console.WriteLine("Get Address Data: Error " + ex.Number + " \nMessage: " + ex.Message);
                     }
-                  
-                    
+
+
                 }
             }
-            return CityId;
+            return CityID;
         }
     }
 }

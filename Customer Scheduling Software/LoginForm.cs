@@ -1,24 +1,15 @@
-﻿using System;
-using System.IO;
-using System.Drawing;
-using System.Windows.Forms;
-using System.Threading.Tasks;
-using System.Collections.Generic;
-using System.ComponentModel;
-using System.Data;
-using System.Linq;
-using System.Text;
-
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Configuration;
-using MySql.Data.MySqlClient;
-
-
+using System.Drawing;
+using System.IO;
+using System.Windows.Forms;
 
 namespace Consultant_Scheduling_Mushero
 {
     public partial class LoginForm : Form
     {
-        public string connectionString = ConfigurationManager.ConnectionStrings["SqlConnection"].ConnectionString;
+
 
         public LoginForm()
         {
@@ -52,14 +43,14 @@ namespace Consultant_Scheduling_Mushero
 
             //Looks for the user account based on username and password 
             user.UserID = user.FindUserAccount(username, password);
-           
+
             //checks if there is a result 
             if (user.UserID > 0)
             {
                 //Creates dashboard object 
                 Dashboard db = new Dashboard(user, username);
                 //Creates a new log
-               
+
                 writeLog(user.UserID);
                 db.Show();
                 this.Hide();
@@ -110,7 +101,7 @@ namespace Consultant_Scheduling_Mushero
 
             if (!File.Exists(fileName))
             {
-                using(StreamWriter sw = File.CreateText(fileName))
+                using (StreamWriter sw = File.CreateText(fileName))
                 {
                     sw.WriteLine("User Logins");
                     sw.WriteLine("UserID: {0} DateTime: {1}", id, DateTime.Now);
@@ -118,7 +109,7 @@ namespace Consultant_Scheduling_Mushero
             }
             else
             {
-                using(StreamWriter sw = File.AppendText(fileName))
+                using (StreamWriter sw = File.AppendText(fileName))
                 {
                     sw.WriteLine("UserID: {0} DateTime: {1}", id, DateTime.Now);
                 }
@@ -143,6 +134,7 @@ namespace Consultant_Scheduling_Mushero
 
         private void button1_Click(object sender, EventArgs e)
         {
+            string connectionString = ConfigurationManager.ConnectionStrings["SqlConnection"].ConnectionString;
             bool result = false;
             MySqlConnection connection = new MySqlConnection(connectionString);
             try
@@ -159,7 +151,7 @@ namespace Consultant_Scheduling_Mushero
 
             }
 
-            if(result == true)
+            if (result == true)
             {
                 MessageBox.Show("Connected");
             }
@@ -168,9 +160,10 @@ namespace Consultant_Scheduling_Mushero
             {
                 MessageBox.Show("Failed");
             }
-                
+
         }
-    }
+
+           }
 }
 
 

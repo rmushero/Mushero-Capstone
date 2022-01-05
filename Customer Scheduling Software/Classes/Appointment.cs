@@ -1,16 +1,12 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using MySql.Data.MySqlClient;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Configuration;
-using System.Threading.Tasks;
 using System.Data;
 
 
 namespace Consultant_Scheduling_Mushero
 {
-    class Appointment
+   public class Appointment
     {
 
         private int customerID;
@@ -25,9 +21,9 @@ namespace Consultant_Scheduling_Mushero
         private DateTime start;
         private DateTime end;
         private string createdBy;
-        private string lastUpdateBy;
+        private string lastUpdatedBy;
 
-    
+
 
         public int CustomerID
         {
@@ -37,7 +33,7 @@ namespace Consultant_Scheduling_Mushero
         {
             get; set;
         }
-        public int AppointmentId
+        public int AppointmentID
         {
             get; set;
         }
@@ -74,12 +70,12 @@ namespace Consultant_Scheduling_Mushero
             get; set;
         }
 
-        public string CreatedBy
+        public int CreatedBy
         {
             get; set;
         }
 
-        public string LastUpdateBy
+        public int LastUpdatedBy
         {
             get; set;
         }
@@ -100,13 +96,13 @@ namespace Consultant_Scheduling_Mushero
         /// </summary>
         /// <param name="username"></param>
         /// <returns></returns>
-        public bool Create_Appointment(string username)
+        public bool Create_Appointment(int userID)
         {
             bool appointmentCreated = false;
-            string command = $"INSERT INTO appointment(customerId, userId, title, description, location, contact, type, url, start, end, createDate, createdBy, lastUpdateBy)" +
-                $"VALUES('{CustomerID}', '{UserID}', '{Title}', '{Description}','{Location}','{Contact}', '{Type}', '{Url}', '{Start.ToString("yyyy-MM-dd H:mm")}', '{End.ToString("yyyy-MM-dd H:mm")}', '{DateTime.Now.ToString("yyyy-MM-dd H:mm")}','{username }','{username}')";
+            string command = $"INSERT INTO Appointment(CustomerID, UserID, Title, Description, Location, Contact, Type, Url, Start, End, CreateDate, CreatedBy, LastUpdatedBy)" +
+                $"VALUES('{CustomerID}', '{UserID}', '{Title}', '{Description}','{Location}','{Contact}', '{Type}', '{Url}', '{Start.ToString("yyyy-MM-dd H:mm")}', '{End.ToString("yyyy-MM-dd H:mm")}', '{DateTime.Now.ToString("yyyy-MM-dd H:mm")}','{userID}','{userID}')";
 
-            
+
             try
             {
                 using (MySqlConnection cnn = new MySqlConnection(connectionString))
@@ -117,7 +113,7 @@ namespace Consultant_Scheduling_Mushero
                         try
                         {
                             cnn.Open();
-                            
+
                             if (cmd.ExecuteNonQuery() > 0)
                             {
                                 appointmentCreated = true;
@@ -149,15 +145,15 @@ namespace Consultant_Scheduling_Mushero
         }
 
 
-      /// <summary>
-      /// this method gets the appointments under the current user id
-      /// </summary>
-      /// <param name="userID"></param>
-      /// <returns></returns>
+        /// <summary>
+        /// this method gets the appointments under the current user id
+        /// </summary>
+        /// <param name="userID"></param>
+        /// <returns></returns>
 
         public DataTable getAppointments(int userID)
         {
-            string command = "SELECT * FROM appointment a WHERE userId = " + userID + " order by start asc";
+            string command = "SELECT * FROM Appointment a WHERE UserID = " + userID + " order by Start asc";
 
             DataTable appointments = new DataTable();
             using (MySqlConnection cnn = new MySqlConnection(connectionString))
@@ -170,7 +166,7 @@ namespace Consultant_Scheduling_Mushero
                         cnn.Open();
 
                         appointments.Load(cmd.ExecuteReader());
-                        
+
                     }
                     catch (MySql.Data.MySqlClient.MySqlException ex)
                     {
@@ -199,16 +195,16 @@ namespace Consultant_Scheduling_Mushero
 
             bool aptUpdated = false;
 
-            string command = $"UPDATE appointment SET appointment.title = '{Title}',  " +
-                $"appointment.description = '{Description}',  " +
-                $"appointment.location = '{Location}', " +
-                $"appointment.contact = '{Contact}', " +
-                $"appointment.type = '{Type}', " +
-                $"appointment.url = '{Url}', " +
-                $"appointment.start ='{Start.ToString("yyyy-MM-dd H:mm:ss")}', " +
-                $"appointment.end = '{End.ToString("yyyy-MM-dd H:mm:ss")}', " +
-                $"appointment.lastUpdateBy = '{LastUpdateBy}'" +
-                $" where appointment.appointmentId = {AppointmentId}; ";
+            string command = $"UPDATE Appointment a SET a.Title = '{Title}',  " +
+                $"a.Description = '{Description}',  " +
+                $"a.Location = '{Location}', " +
+                $"a.Contact = '{Contact}', " +
+                $"a.Type = '{Type}', " +
+                $"a.Url = '{Url}', " +
+                $"a.Start ='{Start.ToString("yyyy-MM-dd H:mm:ss")}', " +
+                $"a.End = '{End.ToString("yyyy-MM-dd H:mm:ss")}', " +
+                $"a.lastUpdatedBy = '{LastUpdatedBy}'" +
+                $" where a.AppointmentID = {AppointmentID}; ";
 
             using (MySqlConnection cnn = new MySqlConnection(connectionString))
             {
@@ -245,7 +241,7 @@ namespace Consultant_Scheduling_Mushero
         /// <param name="appointmentId"></param>
         public void Delete_Appointment(int appointmentId)
         {
-            string command = "DELETE FROM appointment WHERE appointmentId =" + appointmentId + "";
+            string command = "DELETE FROM Appointment WHERE AppointmentID =" + appointmentId + "";
 
 
             using (MySqlConnection cnn = new MySqlConnection(connectionString))
@@ -284,7 +280,7 @@ namespace Consultant_Scheduling_Mushero
         public void Get_Selected_Appointment(int appointmentID)
         {
             DataTable appointmentData = new DataTable();
-            string sql = $"SELECT * FROM appointment WHERE appointmentId = {appointmentID}";
+            string sql = $"SELECT * FROM Appointment WHERE AppointmentID = {appointmentID}";
             using (MySqlConnection cnn = new MySqlConnection(connectionString))
             {
                 using (MySqlCommand cmd = new MySqlCommand(sql, cnn))
@@ -299,17 +295,17 @@ namespace Consultant_Scheduling_Mushero
 
                         foreach (DataRow dr in appointmentData.Rows)
                         {
-                            AppointmentId = Convert.ToInt32(dr["appointmentId"]);
-                            CustomerID = Convert.ToInt32(dr["customerId"]);
-                            UserID = Convert.ToInt32(dr["userId"]);
-                            Title = Convert.ToString(dr["title"]);
-                            Description = Convert.ToString(dr["description"]);
-                            Location = Convert.ToString(dr["location"]);
-                            Contact = Convert.ToString(dr["contact"]);
-                            Type = Convert.ToString(dr["type"]);
-                            Url = Convert.ToString(dr["url"]);
-                            Start = Convert.ToDateTime(dr["start"]);
-                            End = Convert.ToDateTime(dr["end"]);
+                            AppointmentID = Convert.ToInt32(dr["AppointmentID"]);
+                            CustomerID = Convert.ToInt32(dr["CustomerID"]);
+                            UserID = Convert.ToInt32(dr["UserID"]);
+                            Title = Convert.ToString(dr["Title"]);
+                            Description = Convert.ToString(dr["Description"]);
+                            Location = Convert.ToString(dr["Location"]);
+                            Contact = Convert.ToString(dr["Contact"]);
+                            Type = Convert.ToString(dr["Type"]);
+                            Url = Convert.ToString(dr["Url"]);
+                            Start = Convert.ToDateTime(dr["Start"]);
+                            End = Convert.ToDateTime(dr["End"]);
                             Start.Add(getCurrentOffset());
                             End.Add(getCurrentOffset());
 
@@ -352,12 +348,12 @@ namespace Consultant_Scheduling_Mushero
 
         public int checkAvailability(DateTime start, DateTime end)
         {
-           
 
-            string sql =$"SELECT count(*) from appointment where (start <= '{start.Add(getCurrentOffset()).ToString("yyyy-MM-dd H:mm:ss")}' and end >= '{end.Add(getCurrentOffset()).ToString("yyyy-MM-dd H:mm:ss")}') or " +
-                $"(start <= '{end.Add(getCurrentOffset()).ToString("yyyy-MM-dd H: mm: ss")}' and end >= '{start.Add(getCurrentOffset()).ToString("yyyy-MM-dd hh:mm:ss")}') " +
-                $"or (start >= '{start.Add(getCurrentOffset()).ToString("yyyy-MM-dd H:mm:ss")}' and end <= '{end.Add(getCurrentOffset()).ToString("yyyy-MM-dd hh:mm:ss")}')";
-           
+
+            string sql = $"SELECT count(*) from Appointment where (Start <= '{start.Add(getCurrentOffset()).ToString("yyyy-MM-dd H:mm:ss")}' and End >= '{end.Add(getCurrentOffset()).ToString("yyyy-MM-dd H:mm:ss")}') or " +
+                $"(Start <= '{end.Add(getCurrentOffset()).ToString("yyyy-MM-dd H: mm: ss")}' and End >= '{start.Add(getCurrentOffset()).ToString("yyyy-MM-dd hh:mm:ss")}') " +
+                $"or (Start >= '{start.Add(getCurrentOffset()).ToString("yyyy-MM-dd H:mm:ss")}' and End <= '{end.Add(getCurrentOffset()).ToString("yyyy-MM-dd hh:mm:ss")}')";
+
 
             int count = 0;
 
@@ -369,8 +365,8 @@ namespace Consultant_Scheduling_Mushero
 
                     try
                     {
-                       count = int.Parse(cmd.ExecuteScalar().ToString());
-                        
+                        count = int.Parse(cmd.ExecuteScalar().ToString());
+
 
 
                     }
@@ -388,6 +384,47 @@ namespace Consultant_Scheduling_Mushero
 
             return count;
 
+        }
+        /// <summary>
+        /// this method is used to search for appointments within business hours
+        /// </summary>
+        /// <param name="searchDate"></param>
+        /// <returns></returns>
+
+        public DataTable AppointmentSearch(DateTime searchDate)
+        {
+            string formattedDate = searchDate.Date.AddHours(7).ToString("yyyy-MM-dd HH:mm:ss");
+            string formattedDatePlustwelve = searchDate.Date.AddHours(10).ToString("yyyy-MM-dd HH:mm:ss");
+            string command = $"SELECT * FROM Appointment a WHERE Start Between '{formattedDate}' and '{formattedDatePlustwelve} ' order by Start asc";
+
+            DataTable appointments = new DataTable();
+            using (MySqlConnection cnn = new MySqlConnection(connectionString))
+            {
+                using (MySqlCommand cmd = new MySqlCommand(command, cnn))
+                {
+
+                    try
+                    {
+                        cnn.Open();
+                        appointments.Load(cmd.ExecuteReader());
+
+                    }
+                    catch (MySql.Data.MySqlClient.MySqlException ex)
+                    {
+                        Console.WriteLine("AppointmentSearch(): ->Error " + ex.Number + " \nMessage: " + ex.Message); ;
+                    }
+                    finally
+                    {
+                        cnn.Close();
+                        cnn.Dispose();
+                    }
+
+                }
+
+
+            }
+
+            return appointments;
         }
     }
 }

@@ -1,15 +1,14 @@
-﻿using System;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Collections.Generic;
+using System.Configuration;
 using System.Data;
-using System.Drawing;
 using System.Linq;
 using System.Windows.Forms;
-using MySql.Data.MySqlClient;
-using System.Configuration;
 
 namespace Consultant_Scheduling_Mushero
 {
-    public partial class Appointments : Form
+    public partial class AppointmentForm : Form
     {
         const string dataFmt = "{0,-30}{1}";
         User currentUser = new User();
@@ -23,24 +22,24 @@ namespace Consultant_Scheduling_Mushero
         /// New Appointment Form
         /// </summary>
         /// <param name="user"></param>
-        public Appointments(User user)
+        public AppointmentForm(User user)
         {
-          
+
             // Set current user so we can get the customer list
             currentUser = user;
-          
+            Console.WriteLine($"User ID:{user.UserID.ToString()}");
             InitializeComponent();
-            
+
             customerSelection.DisplayMember = "Value";
             customerSelection.ValueMember = "Key";
-            populateCustomer(currentUser.Username);
+            populateCustomer(currentUser.UserID);
             customerSelection.DataSource = new BindingSource(customers, null);
             endDateTime.Value = startDateTime.Value.AddMinutes(30);
-            
+
 
         }
 
-        
+
 
         // Modification Form 
 
@@ -49,20 +48,20 @@ namespace Consultant_Scheduling_Mushero
         /// </summary>
         /// <param name="id"></param>
         /// <param name="user"></param>
-        public Appointments(int id, User user)
+        public AppointmentForm(int id, User user)
         {
             InitializeComponent();
             // Set Modification
             modificationMode = true;
             // Populate Location List
-            newApt.AppointmentId = id;
+            newApt.AppointmentID = id;
             currentUser = user;
-            populateForm(newApt.AppointmentId);
+            populateForm(newApt.AppointmentID);
             Customer customer = new Customer();
             customer.getCustomerData(newApt.CustomerID);
-            customerSelection.Visible = false;
-            customerName.Text = $"{customer.CustomerName}";  
-           
+            customerSelection.Visible = true;
+            customerName.Text = $"{customer.CustomerName}";
+
         }
 
 
@@ -70,11 +69,11 @@ namespace Consultant_Scheduling_Mushero
         /// this method populates the customer data on the form 
         /// </summary>
         /// <param name="username"></param>
-        public void populateCustomer(string username)
+        public void populateCustomer(int UserID)
         {
-            string command = "Select customerId, customerName from customer where createdBy = '" + username + "\'";
+            string command = "Select CustomerID, CustomerName from Customer where CreatedBy = '" + UserID + "\'";
 
-           
+
 
             using (MySqlConnection cnn = new MySqlConnection(connectionString))
             {
@@ -82,14 +81,14 @@ namespace Consultant_Scheduling_Mushero
                 {
                     cnn.Open();
                     using (MySqlDataReader dr = cmd.ExecuteReader())
-                            {
+                    {
 
-                        
+
                         try
                         {
                             while (dr.Read())
                             {
-                                customers.Add(Convert.ToInt32(dr["customerId"]), dr["customerName"].ToString());
+                                customers.Add(Convert.ToInt32(dr["CustomerID"]), dr["CustomerName"].ToString());
                             }
 
                         }
@@ -107,11 +106,11 @@ namespace Consultant_Scheduling_Mushero
                 }
 
             }
-           
-           
+
+
         }
 
-      
+
 
         /// <summary>
         /// this method populates the selected appointment in the form for modifications
@@ -141,15 +140,15 @@ namespace Consultant_Scheduling_Mushero
             urlTxtBox.Text = newApt.Url.ToString();
 
             //Set Start Time
-          startDateTime.Value = newApt.Start.Add(-getCurrentOffset());
+            startDateTime.Value = newApt.Start.Add(-getCurrentOffset());
 
             //Set End Time
-           endDateTime.Value = newApt.End.Add(-getCurrentOffset());
+            endDateTime.Value = newApt.End.Add(-getCurrentOffset());
         }
 
 
 
-       
+
         /// <summary>
         /// Method for Action when Save Button is Clicked
         /// </summary>
@@ -157,9 +156,9 @@ namespace Consultant_Scheduling_Mushero
         /// <param name="e"></param>
         private void saveBtn_Click(object sender, EventArgs e)
         {
-            if(validateForm() == true)
+            if (validateForm() == true)
             {
-                if(modificationMode == true)
+                if (modificationMode == true)
                 {
                     if (updateAppointment() == true)
                     {
@@ -171,24 +170,24 @@ namespace Consultant_Scheduling_Mushero
                 }
                 else
                 {
-                    
-                        if (createAppointment() == true)
-                        {
-                            string message = "Appointment Successfully Created";
-                        this.Close();
-                            MessageBox.Show(message);
 
-                        }
-                    
-                }           
-                
+                    if (createAppointment() == true)
+                    {
+                        string message = "Appointment Successfully Created";
+                        this.Close();
+                        MessageBox.Show(message);
+
+                    }
+
+                }
+
 
             }
-           
+
 
         }
 
-     
+
         /// <summary>
         /// Method for action when cancel button is clicked
         /// </summary>
@@ -215,7 +214,7 @@ namespace Consultant_Scheduling_Mushero
 
         private void startDateTime_ValueChanged(object sender, EventArgs e)
         {
-           
+
             endDateTime.Value = startDateTime.Value.AddMinutes(30);
 
             if (startDateTime.Value < DateTime.Now)
@@ -233,7 +232,7 @@ namespace Consultant_Scheduling_Mushero
 
         // METHODS
 
-       
+
         /// <summary>
         /// Method for Validating the Form 
         /// Checks each control to verify it's been properly filled ou
@@ -250,34 +249,25 @@ namespace Consultant_Scheduling_Mushero
                     if (validateDates() == true)
                     {
 
-
                         validated = true;
-
                     }
                     else
                     {
                         return validated;
                     }
-
                 }
                 else
                 {
-
                     if (validateExistingApts() == true)
                     {
                         if (validateDates() == true)
                         {
-
-
                             validated = true;
-
                         }
                         else
                         {
                             return validated;
                         }
-
-
                     }
                     else
                     {
@@ -289,7 +279,6 @@ namespace Consultant_Scheduling_Mushero
             {
                 return validated;
             }
-
             return validated;
         }
 
@@ -307,7 +296,6 @@ namespace Consultant_Scheduling_Mushero
                 if (string.IsNullOrEmpty(control.Text.ToString()))
                 {
                     count++;
-
                 }
                 else
                 {
@@ -315,12 +303,12 @@ namespace Consultant_Scheduling_Mushero
                 }
             }
 
-            if(count > 0)
+            if (count > 0)
             {
                 MessageBox.Show("Please fill out all fields");
                 validated = false;
             }
-            
+
 
 
             return validated;
@@ -360,7 +348,7 @@ namespace Consultant_Scheduling_Mushero
                 validated = true;
 
             }
-            
+
             return validated;
         }
 
@@ -374,8 +362,8 @@ namespace Consultant_Scheduling_Mushero
 
             DateTime tempStart = startDateTime.Value.Add(-getCurrentOffset());
             DateTime tempEnd = endDateTime.Value.Add(-getCurrentOffset());
-           
-          
+
+
 
             if (newApt.checkAvailability(tempStart, tempEnd) > 0)
             {
@@ -392,7 +380,7 @@ namespace Consultant_Scheduling_Mushero
             return validated;
         }
 
-        
+
 
         /// <summary>
         /// This method collects data from the form and submits it to the database
@@ -415,13 +403,13 @@ namespace Consultant_Scheduling_Mushero
             newApt.CustomerID = Convert.ToInt32(customerSelection.SelectedValue);
             try
             {
-                if(newApt.Create_Appointment(currentUser.Username) == true)
+                if (newApt.Create_Appointment(currentUser.UserID) == true)
                 {
                     aptCreated = true;
                 }
-                
 
-            } 
+
+            }
             catch (MySql.Data.MySqlClient.MySqlException ex)
             {
                 Console.WriteLine("Error " + ex.Number + " \nMessage: " + ex.Message);
@@ -454,7 +442,7 @@ namespace Consultant_Scheduling_Mushero
 
             try
             {
-                if(newApt.Update_Appointment() == true)
+                if (newApt.Update_Appointment() == true)
                 {
                     updated = true;
                 }

@@ -1,42 +1,41 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.ComponentModel;
 using System.Data;
-using System.Drawing;
 using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
 using System.Windows.Forms;
 
 namespace Consultant_Scheduling_Mushero
 {
-    public partial class Customers : Form
+    public partial class CustomerForm : Form
     {
 
-        string currentUser;
+        int _userID;
         bool modification = false;
-               
+
 
         Customer customer = new Customer();
         Address address = new Address();
         City city = new City();
         Country country = new Country();
 
-        public Customers(string username)
+        public CustomerForm(int userID)
         {
             InitializeComponent();
-            this.Text = "Add Customer";
-            currentUser = username;
+            this.Text = "Customer";
+
+
+            _userID = userID;
+
+
         }
 
-        
+
         // Modify Customer
-        public Customers(string username, int id)
+        public CustomerForm(string username, int id)
         {
             InitializeComponent();
             this.Text = "Modify Customer";
             modification = true;
-            currentUser = username;
+
             populateForm(id);
         }
 
@@ -53,7 +52,7 @@ namespace Consultant_Scheduling_Mushero
             }
             else
             {
-                
+
                 createNewCustomer();
             }
 
@@ -117,13 +116,13 @@ namespace Consultant_Scheduling_Mushero
         {
             bool validated = false;
 
-            
+
             foreach (var control in Controls.Cast<Control>().Where(c => c is TextBox)) // Lambda to iterate over the controls to check for missing data.
             {
                 if (string.IsNullOrEmpty(control.Text.ToString()))
                 {
                     string controlName = control.Name.ToString();
-                    string message = $"You cannot leave {controlName} empty.";
+                    string message = $"You cannot leave required fields empty.";
                     string caption = "Incomplete Data";
                     var result = MessageBox.Show(message, caption, MessageBoxButtons.OK, MessageBoxIcon.Warning);
                     break;
@@ -144,27 +143,29 @@ namespace Consultant_Scheduling_Mushero
         /// Gets data on the form and creates an object 
         /// </summary>
         private void createObject()
-        {    
+        {
 
-            string _country = countryTxtBox.Text.ToString();
-            country.Country_name = _country;
-            city.CountryId = country.InsertCountry(currentUser);
+
+            country.CountryName = countryTxtBox.Text.ToString();
+
+            city.CountryID = country.InsertCountry(_userID);
+
 
 
             string _city = cityTxtBox.Text.ToString();
             city.CityName = _city;
-            address.CityId = city.insertCity(currentUser);
+            address.CityID = city.insertCity(_userID);
 
             string _addr1 = addr1TxtBox.Text.ToString();
             string _addr2 = addr2TxtBox.Text.ToString();
             string _postal = postalTxtBox.Text.ToString();
             string _phone = phoneTextBox.Text.ToString();
-           
-            address.Address1 = _addr1;
+
+            address._Address = _addr1;
             address.Address2 = _addr2;
             address.PostalCode = _postal;
             address.Phone = _phone;
-            customer.AddressId = address.insertAddress(currentUser);
+            customer.AddressID = address.insertAddress(_userID);
 
 
             string _name = nameTxtBox.Text.ToString();
@@ -172,9 +173,8 @@ namespace Consultant_Scheduling_Mushero
             sbyte _active = 1; //Not of correct Type
             customer.Active = _active;
 
-            int customerID = customer.insertCustomer(currentUser);
-            customer.CustomerId = customerID;
-
+            int customerID = customer.insertCustomer(_userID);
+            customer.CustomerID = customerID;
 
 
 
@@ -186,18 +186,18 @@ namespace Consultant_Scheduling_Mushero
         /// <param name="customerID"></param>
         public void populateForm(int customerID)
         {
-            
-
-            customer.AddressId = customer.getCustomerData(customerID);
-
-            Console.WriteLine($"Address ID:{customer.AddressId}");
 
 
-           address.CityId = address.getAddressData(customer.AddressId);
+            customer.AddressID = customer.getCustomerData(customerID);
 
-            city.CountryId = city.getCityData(address.CityId);
-            country.getCountryData(city.CountryId);
-            country.CountryId = city.CountryId;
+            Console.WriteLine($"Address ID:{customer.AddressID}");
+
+
+            address.CityID = address.getAddressData(customer.AddressID);
+
+            city.CountryID = city.getCityData(address.CityID);
+            country.getCountryData(city.CountryID);
+            country.CountryID = city.CountryID;
 
 
             nameTxtBox.Text = customer.CustomerName;
@@ -211,11 +211,11 @@ namespace Consultant_Scheduling_Mushero
             }
 
             phoneTextBox.Text = address.Phone;
-            addr1TxtBox.Text = address.Address1;
+            addr1TxtBox.Text = address._Address;
             addr2TxtBox.Text = address.Address2;
             postalTxtBox.Text = address.PostalCode;
             cityTxtBox.Text = city.CityName;
-            countryTxtBox.Text = country.Country_name;
+            countryTxtBox.Text = country.CountryName;
 
 
 
@@ -230,22 +230,22 @@ namespace Consultant_Scheduling_Mushero
         /// </summary>
         public void updateCustomerInfo()
         {
-            
 
-                sbyte _active;
-                string _name = nameTxtBox.Text.ToString();
+
+            sbyte _active;
+            string _name = nameTxtBox.Text.ToString();
             Console.WriteLine(_name);
-                string _phone = phoneTextBox.Text.ToString();
+            string _phone = phoneTextBox.Text.ToString();
             Console.WriteLine(_phone);
             if (activeCkBx.Checked == true)
-                {
-                    _active = 1; 
-                }
-                else
-                {
-                    _active = 0;
-                }
-                string _addr1 = addr1TxtBox.Text.ToString();
+            {
+                _active = 1;
+            }
+            else
+            {
+                _active = 0;
+            }
+            string _addr1 = addr1TxtBox.Text.ToString();
             Console.WriteLine(_addr1);
             string _addr2 = addr2TxtBox.Text.ToString();
             Console.WriteLine(_addr2);
@@ -257,25 +257,26 @@ namespace Consultant_Scheduling_Mushero
             Console.WriteLine(_country);
 
 
-                 customer.CustomerName = _name;
-                 customer.Active = _active;                
-                 address.Address1 = _addr1;               
-                 address.Address2 = _addr2;               
-                 address.PostalCode = _postal;               
-                 address.Phone = _phone;               
-                 city.CityName = _city;
-                 country.Country_name = _country;
+            customer.CustomerName = _name;
+            customer.Active = _active;
+            address._Address = _addr1;
+            address.Address2 = _addr2;
+            address.PostalCode = _postal;
+            address.Phone = _phone;
+            city.CityName = _city;
+            country.CountryName = _country;
 
 
-            country.updateCountry(currentUser);
-            city.updateCity(currentUser);
-        
-            address.updateAddress(currentUser);
-            customer.updateCustomer(currentUser);
+            country.updateCountry(_userID);
+            city.updateCity(_userID);
+
+            address.updateAddress(_userID);
+            customer.updateCustomer(_userID);
+
 
         }
 
-       
+
     }
 }
 

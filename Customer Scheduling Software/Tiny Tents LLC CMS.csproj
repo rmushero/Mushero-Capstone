@@ -6,8 +6,8 @@
     <Platform Condition=" '$(Platform)' == '' ">AnyCPU</Platform>
     <ProjectGuid>{B1F46B31-BD1D-4693-8144-6A5173CF1DAF}</ProjectGuid>
     <OutputType>WinExe</OutputType>
-    <RootNamespace>Consultant_Scheduling_Mushero</RootNamespace>
-    <AssemblyName>Consultant Scheduling Mushero</AssemblyName>
+    <RootNamespace>Mushero_Capstone</RootNamespace>
+    <AssemblyName>Tiny Tents LLC CMS</AssemblyName>
     <TargetFrameworkVersion>v4.7.2</TargetFrameworkVersion>
     <FileAlignment>512</FileAlignment>
     <AutoGenerateBindingRedirects>true</AutoGenerateBindingRedirects>
@@ -81,17 +81,17 @@
     <Reference Include="WindowsBase" />
   </ItemGroup>
   <ItemGroup>
-    <Compile Include="Customers.cs">
+    <Compile Include="CustomerForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Customers.Designer.cs">
-      <DependentUpon>Customers.cs</DependentUpon>
+    <Compile Include="CustomerForm.Designer.cs">
+      <DependentUpon>CustomerForm.cs</DependentUpon>
     </Compile>
-    <Compile Include="Appointments.cs">
+    <Compile Include="AppointmentForm.cs">
       <SubType>Form</SubType>
     </Compile>
-    <Compile Include="Appointments.Designer.cs">
-      <DependentUpon>Appointments.cs</DependentUpon>
+    <Compile Include="AppointmentForm.Designer.cs">
+      <DependentUpon>AppointmentForm.cs</DependentUpon>
     </Compile>
     <Compile Include="CalendarVw.cs">
       <SubType>Form</SubType>
@@ -125,11 +125,11 @@
     <Compile Include="Reports.Designer.cs">
       <DependentUpon>Reports.cs</DependentUpon>
     </Compile>
-    <EmbeddedResource Include="Customers.resx">
-      <DependentUpon>Customers.cs</DependentUpon>
+    <EmbeddedResource Include="CustomerForm.resx">
+      <DependentUpon>CustomerForm.cs</DependentUpon>
     </EmbeddedResource>
-    <EmbeddedResource Include="Appointments.resx">
-      <DependentUpon>Appointments.cs</DependentUpon>
+    <EmbeddedResource Include="AppointmentForm.resx">
+      <DependentUpon>AppointmentForm.cs</DependentUpon>
     </EmbeddedResource>
     <EmbeddedResource Include="CalendarVw.resx">
       <DependentUpon>CalendarVw.cs</DependentUpon>
@@ -154,6 +154,7 @@
     <Compile Include="Properties\Resources.Designer.cs">
       <AutoGen>True</AutoGen>
       <DependentUpon>Resources.resx</DependentUpon>
+      <DesignTime>True</DesignTime>
     </Compile>
     <EmbeddedResource Include="Reports.resx">
       <DependentUpon>Reports.cs</DependentUpon>

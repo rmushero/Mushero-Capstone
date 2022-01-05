@@ -1,10 +1,5 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using MySql.Data.MySqlClient;
-using System.Configuration;
-using System.Threading.Tasks;
+﻿using MySql.Data.MySqlClient;
+using System;
 using System.Data;
 
 
@@ -14,18 +9,18 @@ namespace Consultant_Scheduling_Mushero
     {
         private int countryId;
 
-        private string country;
+        private string countryName;
 
-    
+
 
         public int CountryId
         {
             get; set;
         }
-        public string Country_name
+        public string CountryName
         {
-            get { return country; }
-            set { country = value; }
+            get { return countryName; }
+            set { countryName = value; }
         }
 
         //Constructors
@@ -34,55 +29,50 @@ namespace Consultant_Scheduling_Mushero
         {
 
         }
-    
+
         public Country(int countryId)
         {
             CountryId = countryId;
-          
+
         }
 
-      
 
-      /// <summary>
-      /// This method inserts data into the country table
-      /// </summary>
-      /// <param name="userName"></param>
-      /// <returns></returns>
-        public int InsertCountry(string userName)
+
+        /// <summary>
+        /// This method inserts data into the country table
+        /// </summary>
+        /// <param name="userName"></param>
+        /// <returns></returns>
+
+        public int InsertCountry(int userID)
         {
+            string command = $"INSERT INTO country(CountryName, CreateDate," +
+                $" CreatedBy, LastUpdatedBy) Values('{CountryName}'," +
+                $"'{DateTime.Now.ToString("yyyy-MM-dd H:mm:ss")}', '{userID}', '{userID}');";
 
-           
-          
-            string command = $"INSERT INTO country(country, createDate," +
-                $" createdBy, lastUpdateBy) Values('{Country_name}'," +
-                $"'{DateTime.Now.ToString("yyyy-MM-dd H:mm:ss")}', '{userName}', '{userName}');";
-            
-            try
+
+            using (MySqlConnection cnn = new MySqlConnection(connectionString))
             {
-                using (MySqlConnection cnn = new MySqlConnection(connectionString))
+                using (MySqlCommand cmd = new MySqlCommand(command, cnn))
                 {
-                    using (MySqlCommand cmd = new MySqlCommand(command, cnn))
+                    try
                     {
-                        try
-                        {
-                            cnn.Open();
-                            cmd.ExecuteNonQuery();
-                            CountryId = Convert.ToInt32(cmd.LastInsertedId);
-                            
-                        }
-                        catch (MySql.Data.MySqlClient.MySqlException ex)
-                        {
-                            Console.WriteLine("Insert Country: Error " + ex.Number + " \nMessage: " + ex.Message);
-                        }
-                        cnn.Close();
-                        cnn.Dispose();
+                        cnn.Open();
+                        cmd.ExecuteNonQuery();
+                        CountryId = Convert.ToInt32(cmd.LastInsertedId);
+                        Console.WriteLine($"Insertion Successful Country ID: {CountryId}");
+
                     }
+                    catch (MySql.Data.MySqlClient.MySqlException ex)
+                    {
+                        Console.WriteLine("Insert Country: Error " + ex.Number + " \nMessage: " + ex.Message);
+                    }
+                    cnn.Close();
+                    cnn.Dispose();
                 }
             }
-            catch (Exception ex)
-            {
-                Console.WriteLine(ex.ToString());
-            }
+
+
             return CountryId;
         }
 
@@ -96,7 +86,7 @@ namespace Consultant_Scheduling_Mushero
 
             CountryId = countryId;
 
-            string command = $"SELECT country from country where countryId = {countryId}";
+            string command = $"SELECT CountryName from country where CountryId = {countryId}";
 
             using (MySqlConnection cnn = new MySqlConnection(connectionString))
             {
@@ -112,10 +102,10 @@ namespace Consultant_Scheduling_Mushero
                             {
                                 while (dr.Read())
                                 {
-                                   
-                                   
-                                   Country_name = dr["country"].ToString();
-                                    
+
+
+                                    CountryName = dr["CountryName"].ToString();
+
 
                                 }
                             }
@@ -124,13 +114,13 @@ namespace Consultant_Scheduling_Mushero
                     }
                     catch (MySql.Data.MySqlClient.MySqlException ex)
                     {
-                        Console.WriteLine("Error " + ex.Number + " \nMessage: " + ex.Message);
+                        Console.WriteLine("Get Country Data Error " + ex.Number + " \nMessage: " + ex.Message);
                     }
 
 
                 }
             }
-          
+
 
         }
 
@@ -142,10 +132,10 @@ namespace Consultant_Scheduling_Mushero
         /// <param name="username"></param>
 
 
-        public void updateCountry(string username)
+        public void updateCountry(int userID)
         {
 
-            string command = $"UPDATE country c set c.country = '{Country_name}', c.lastUpdateBy = '{username}' where c. countryId = {CountryId} ";
+            string command = $"UPDATE country c set c.CountryName = '{CountryName}', c.LastUpdatedBy = '{userID}' where c.CountryId = {CountryId} ";
 
 
             using (MySqlConnection cnn = new MySqlConnection(connectionString))
@@ -158,7 +148,7 @@ namespace Consultant_Scheduling_Mushero
                     try
                     {
                         cmd.ExecuteNonQuery();
-                         
+
 
                     }
                     catch (MySql.Data.MySqlClient.MySqlException ex)
@@ -174,12 +164,10 @@ namespace Consultant_Scheduling_Mushero
                 }
             }
         }
-
-        }
-
-
-
-        
     }
+
+
+
+}
 
 

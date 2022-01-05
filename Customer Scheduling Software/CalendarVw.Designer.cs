@@ -32,10 +32,7 @@ namespace Consultant_Scheduling_Mushero
             this.apptDataGridView = new System.Windows.Forms.DataGridView();
             this.monthCalendar = new System.Windows.Forms.MonthCalendar();
             this.exitButton = new System.Windows.Forms.Button();
-            this.weeklyDataGridView = new System.Windows.Forms.DataGridView();
-            this.weekLabel = new System.Windows.Forms.Label();
             ((System.ComponentModel.ISupportInitialize)(this.apptDataGridView)).BeginInit();
-            ((System.ComponentModel.ISupportInitialize)(this.weeklyDataGridView)).BeginInit();
             this.SuspendLayout();
             // 
             // apptDataGridView
@@ -65,14 +62,16 @@ namespace Consultant_Scheduling_Mushero
             // 
             this.monthCalendar.CalendarDimensions = new System.Drawing.Size(1, 2);
             this.monthCalendar.Location = new System.Drawing.Point(55, 51);
+            this.monthCalendar.MaxSelectionCount = 1;
             this.monthCalendar.Name = "monthCalendar";
             this.monthCalendar.ShowTodayCircle = false;
             this.monthCalendar.TabIndex = 11;
+            this.monthCalendar.DateSelected += new System.Windows.Forms.DateRangeEventHandler(this.monthCalendar_DateSelected);
             // 
             // exitButton
             // 
             this.exitButton.Anchor = System.Windows.Forms.AnchorStyles.None;
-            this.exitButton.Location = new System.Drawing.Point(368, 738);
+            this.exitButton.Location = new System.Drawing.Point(347, 396);
             this.exitButton.Name = "exitButton";
             this.exitButton.Size = new System.Drawing.Size(58, 30);
             this.exitButton.TabIndex = 12;
@@ -80,52 +79,18 @@ namespace Consultant_Scheduling_Mushero
             this.exitButton.UseVisualStyleBackColor = true;
             this.exitButton.Click += new System.EventHandler(this.exitButton_Click_1);
             // 
-            // weeklyDataGridView
-            // 
-            this.weeklyDataGridView.AllowUserToAddRows = false;
-            this.weeklyDataGridView.AllowUserToDeleteRows = false;
-            this.weeklyDataGridView.AllowUserToResizeColumns = false;
-            this.weeklyDataGridView.AllowUserToResizeRows = false;
-            this.weeklyDataGridView.AutoSizeColumnsMode = System.Windows.Forms.DataGridViewAutoSizeColumnsMode.Fill;
-            this.weeklyDataGridView.ColumnHeadersHeightSizeMode = System.Windows.Forms.DataGridViewColumnHeadersHeightSizeMode.AutoSize;
-            this.weeklyDataGridView.Location = new System.Drawing.Point(66, 411);
-            this.weeklyDataGridView.MultiSelect = false;
-            this.weeklyDataGridView.Name = "weeklyDataGridView";
-            this.weeklyDataGridView.ReadOnly = true;
-            this.weeklyDataGridView.RowHeadersVisible = false;
-            this.weeklyDataGridView.SelectionMode = System.Windows.Forms.DataGridViewSelectionMode.CellSelect;
-            this.weeklyDataGridView.ShowCellErrors = false;
-            this.weeklyDataGridView.ShowCellToolTips = false;
-            this.weeklyDataGridView.ShowEditingIcon = false;
-            this.weeklyDataGridView.ShowRowErrors = false;
-            this.weeklyDataGridView.Size = new System.Drawing.Size(670, 268);
-            this.weeklyDataGridView.TabIndex = 14;
-            // 
-            // weekLabel
-            // 
-            this.weekLabel.AutoSize = true;
-            this.weekLabel.Location = new System.Drawing.Point(375, 711);
-            this.weekLabel.Name = "weekLabel";
-            this.weekLabel.Size = new System.Drawing.Size(35, 13);
-            this.weekLabel.TabIndex = 17;
-            this.weekLabel.Text = "label1";
-            // 
             // CalendarVw
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-            this.ClientSize = new System.Drawing.Size(803, 797);
-            this.Controls.Add(this.weekLabel);
+            this.ClientSize = new System.Drawing.Size(803, 463);
             this.Controls.Add(this.apptDataGridView);
             this.Controls.Add(this.monthCalendar);
             this.Controls.Add(this.exitButton);
-            this.Controls.Add(this.weeklyDataGridView);
             this.Name = "CalendarVw";
             this.Text = "Calendar";
             ((System.ComponentModel.ISupportInitialize)(this.apptDataGridView)).EndInit();
-            ((System.ComponentModel.ISupportInitialize)(this.weeklyDataGridView)).EndInit();
             this.ResumeLayout(false);
-            this.PerformLayout();
 
         }
 
@@ -135,7 +100,5 @@ namespace Consultant_Scheduling_Mushero
         private System.Windows.Forms.DataGridView apptDataGridView;
         private System.Windows.Forms.MonthCalendar monthCalendar;
         private System.Windows.Forms.Button exitButton;
-        private System.Windows.Forms.DataGridView weeklyDataGridView;
-        private System.Windows.Forms.Label weekLabel;
     }
 }

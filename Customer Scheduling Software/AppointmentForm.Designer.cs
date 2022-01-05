@@ -1,7 +1,7 @@
 ﻿
 namespace Consultant_Scheduling_Mushero
 {
-    partial class Appointments
+    partial class AppointmentForm
     {
         /// <summary>
         /// Required designer variable.
@@ -141,6 +141,7 @@ namespace Consultant_Scheduling_Mushero
             this.startDateTime.Name = "startDateTime";
             this.startDateTime.Size = new System.Drawing.Size(158, 20);
             this.startDateTime.TabIndex = 8;
+           
             // 
             // endDateTime
             // 
@@ -248,7 +249,7 @@ namespace Consultant_Scheduling_Mushero
             this.locationtxtBox.Size = new System.Drawing.Size(253, 20);
             this.locationtxtBox.TabIndex = 22;
             // 
-            // Appointments
+            // AppointmentForm
             // 
             this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
             this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
@@ -275,7 +276,7 @@ namespace Consultant_Scheduling_Mushero
             this.Controls.Add(this.label2);
             this.Controls.Add(this.label1);
             this.Margin = new System.Windows.Forms.Padding(2);
-            this.Name = "Appointments";
+            this.Name = "AppointmentForm";
             this.Text = "Appointments";
             this.ResumeLayout(false);
             this.PerformLayout();
